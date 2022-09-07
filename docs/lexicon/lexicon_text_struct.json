@@ -1,0 +1,16 @@
+{
+	"title": "lexicon_text_struct(textEntry, struct)",
+	"url": "https://tabularelf.com/docs/lexicon/#/2.1.3/text?id=lexicon_texttextentry-substring-",
+	"description": "A special variation of lexicon_text, that uses a struct in its place. It doesn’t use the replace characters, but rather follows a very unique format. New to v1.1.0 of Lexicon. All replace characters are instead variable names. i.e. %variable_name%",
+	"args": [{
+		"name": "textEntry",
+		"type": "String",
+		"description": "The text you want to replace, as per the Lexicon replace chr (default is `%s`)."
+	},
+	{
+		"name": "struct",
+		"type": "Struct",
+		"description": "The struct you want to pass in."
+	}
+	]
+}
