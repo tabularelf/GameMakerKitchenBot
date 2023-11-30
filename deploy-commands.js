@@ -4,6 +4,7 @@ module.exports = function(client) {
 	const { REST } = require('@discordjs/rest');
 	const { Routes } = require('discord.js');
 	const { clientID, guildID, token } = require('./config.json');
+	const Guilds = client.guilds.cache.map(guild => guild.id);
 
 	const commands = [];
 	const commandsPath = path.join(__dirname, 'commands');
@@ -16,28 +17,28 @@ module.exports = function(client) {
 		commands.push(command.data.toJSON());
 	}
 
-	// Setting up docs
-	const buildDoc = require('./doc-builder.js');
-	const docsPath = path.join(__dirname, 'docs');
-	var docsFiles = fs.readdirSync(docsPath);
-
-	for (const file of docsFiles) {
-		var filePath = path.join(docsPath, file);
-		//const docFolder = require(filePath);
-		var files = fs.readdirSync(filePath + '/').filter(file => file.endsWith('.json'));
-		var docCommand = buildDoc(file);
-		client.commands.set(docCommand.data.name, docCommand);
-		for (const mdFile of files) {
-			var docPath = path.join(docsPath, mdFile);
-			var docName = path.parse(docPath).name;
-			// Adds choice to doc
-			docCommand.data.addSubcommand(subcommand =>
-				subcommand
-					.setName(docName)
-					.setDescription('Info about ' + docName));
-		}
-		commands.push(docCommand.data.toJSON());
-	}
+	//// Setting up docs
+	//const buildDoc = require('./doc-builder.js');
+	//const docsPath = path.join(__dirname, 'docs');
+	//var docsFiles = fs.readdirSync(docsPath);
+//
+	//for (const file of docsFiles) {
+	//	var filePath = path.join(docsPath, file);
+	//	//const docFolder = require(filePath);
+	//	var files = fs.readdirSync(filePath + '/').filter(file => file.endsWith('.json'));
+	//	var docCommand = buildDoc(file);
+	//	client.commands.set(docCommand.data.name, docCommand);
+	//	for (const mdFile of files) {
+	//		var docPath = path.join(docsPath, mdFile);
+	//		var docName = path.parse(docPath).name;
+	//		// Adds choice to doc
+	//		docCommand.data.addSubcommand(subcommand =>
+	//			subcommand
+	//				.setName(docName)
+	//				.setDescription('Info about ' + docName));
+	//	}
+	//	commands.push(docCommand.data.toJSON());
+	//}
 
 	const rest = new REST({ version: '10' }).setToken(token);
 
@@ -50,7 +51,7 @@ module.exports = function(client) {
 	/*rest.put(Routes.applicationCommands(clientID), { body: [] })
 		.then(() => console.log('Successfully deleted all application commands.'))
 		.catch(console.error);*/
-
+	//console.log(Guilds);
 	rest.put(Routes.applicationGuildCommands(clientID, guildID), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);

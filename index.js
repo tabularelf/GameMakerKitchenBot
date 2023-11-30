@@ -5,7 +5,12 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');;
 const reload = require('./deploy-commands.js')
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [
+	GatewayIntentBits.Guilds,
+	GatewayIntentBits.GuildMessages,
+	GatewayIntentBits.MessageContent,
+	GatewayIntentBits.GuildMembers,
+]});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -30,24 +35,45 @@ client.on('interactionCreate', async interaction => {
 
 	var SubCommand = null;
 	var args = {};
-	try {
-		SubCommand = interaction.options.getSubcommand();
-    } catch (ex) {
-		console.log("Not a Subcommand. Executing: " + interaction.commandName);
-	}
-
-	if (SubCommand != null) {
-		args = {
-			subCommand: SubCommand,
-			command: interaction.commandName
-		}
-	}
+	//try {
+	//	SubCommand = interaction.options.getSubcommand();
+    //} catch (ex) {
+	//	console.log("Not a Subcommand. Executing: " + interaction.commandName);
+	//}
+//
+	//if (SubCommand != null) {
+	//	args = {
+	//		subCommand: SubCommand,
+	//		command: interaction.commandName
+	//	}
+	//}
 
 	try {
 		await command.execute(client, interaction, args);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+});
+
+client.on("threadCreate", async thread => {
+	// This forces the bot to fetch the messages prior... Handy for us.
+	// Not a *perfect* solution, but it's about as close as we can get!
+	await thread.messages.fetch();
+
+	if (thread.messageCount > 0) {
+		thread.lastMessageId.pin();
+	} else {
+		await thread.messages.fetch().then(messages => {
+			let firstMessage = messages.first();
+			if (firstMessage != undefined) {
+				if (firstMessage.pinnable) {
+					firstMessage.pin();
+				} else {
+					console.log(`Message from Guild: ${firstMessage.guildId} Channel: ${firstMessage.channelId} Thread: ${firstMessage.thread} Message: ${firstMessage.id} cannot be pinned!`);
+				}
+			}
+		});
 	}
 });
 
