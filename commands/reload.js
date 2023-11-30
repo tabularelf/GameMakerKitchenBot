@@ -1,11 +1,20 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('reload')
-		.setDescription('Reloads the bot'),
-	async execute(client, interaction) {
-		client.commands.clear();
+		.setDescription('Reloads the bot')
+		.addBooleanOption(bool => {
+            return bool
+			.setName("global")
+			.setDescription("Registers the commands globally")
+        }),
+	async execute(interaction) {
+		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+			return interaction.reply({content: "Invalid permission", ephemeral: true});
+		}
+
+		interaction.client.commands.clear();
 		const reload = require('../deploy-commands.js');
 		const fs = require('node:fs');
 		const path = require('node:path');
@@ -15,10 +24,10 @@ module.exports = {
 		for (const file of commandFiles) {
 			const filePath = path.join(commandsPath, file);
 			const command = require(filePath);
-			client.commands.set(command.data.name, command);
+			interaction.client.commands.set(command.data.name, command);
 		}
-
-		reload(client);
+		
+		reload(interaction.client, interaction.options.getBoolean("global") ?? false);
 		interaction.reply('Bot reloaded!');
 	},
 };
