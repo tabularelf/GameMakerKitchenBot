@@ -22,7 +22,7 @@ module.exports = function(client, global = false) {
 	if (global) {
 		for(element in Guilds) {
 		rest.put(Routes.applicationGuildCommands(clientID, Guilds[element]), { body: commands })
-			.then(() => console.log('Successfully registered application commands.'))
+			.then(() => console.log(`Successfully registered application commands for guild ${Guilds[element]}.`))
 			.catch(console.error);
 		}
 	} else {
