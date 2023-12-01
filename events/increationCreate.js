@@ -24,21 +24,3 @@ module.exports = {
 		}
 	},
 };
-
-
-//client.on('interactionCreate', async interaction => {
-//	if (!interaction.isChatInputCommand()) return;
-//
-//	const command = client.commands.get(interaction.commandName);
-//	if (!command) return;
-//
-//	var SubCommand = null;
-//	var args = {};
-//
-//	try {
-//		await command.execute(client, interaction, args);
-//	} catch (error) {
-//		console.error(error);
-//		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-//	}
-//});
