@@ -40,7 +40,7 @@ module.exports = {
 			console.error(err);
 		  }
 
-		download("http://gamemakerkitchen.com/search.json", searchFile, () => {
+		download("http://www.gamemakerkitchen.com/search.json", searchFile, () => {
 			fs.stat(searchFile, (value) => {
 				console.log(value);
 			});
