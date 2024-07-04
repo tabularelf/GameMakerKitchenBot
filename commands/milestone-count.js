@@ -4,7 +4,7 @@ const { githubToken } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('issues-count')
+		.setName('milestone-count')
 		.setDescription('Gets the GameMaker Bugs repository issues, by milestone!')
 		.addStringOption(message => {
 			return message
