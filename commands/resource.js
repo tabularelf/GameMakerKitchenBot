@@ -29,7 +29,7 @@ module.exports = {
 		  });
 		};
 
-		const folderName = "./temp/";
+		const folderName = "./.temp/";
 		const searchFile = `${folderName}search.json`;
 
 		try {
