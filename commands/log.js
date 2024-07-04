@@ -5,8 +5,6 @@ module.exports = {
 		.setName('log')
 		.setDescription('Prints out a logged image.'),
 	async execute(interaction) {
-		await interaction.channel.send(`https://raw.githubusercontent.com/tabularelf/GameMakerKitchenBot/main/assets/log.png`);
-		interaction.deferReply();
-		interaction.deleteReply();
+		return interaction.reply({content: `https://raw.githubusercontent.com/tabularelf/GameMakerKitchenBot/main/assets/log.png`, ephemeral: false});
 	},
 };
