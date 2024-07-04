@@ -1,5 +1,0 @@
-{
-	"title": "lexicon_text(textEntry, [substring], [...])",
-	"url": "https://tabularelf.com/docs/lexicon/#/2.1.3/text?id=lexicon_texttextentry-substring-",
-	"description": "The bread and butter of the main system. Takes a text pointer (a string), such as text.introduction1, text_introduction1, text.Introduction1 or any kind of flavour. So long as it’s a string, it works.\nThe additional optional arguments replace %s with each and every subsequent argument. i.e."
-}
