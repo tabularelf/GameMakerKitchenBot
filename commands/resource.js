@@ -41,18 +41,16 @@ module.exports = {
 		  }
 
 		download("http://www.gamemakerkitchen.com/search.json", searchFile, () => {
-			fs.stat(searchFile, (value) => {
-				console.log(value);
-			});
 			var obj;
 			fs.readFile(searchFile, 'utf8', function (err, data) {
   			if (err) throw err;
   				obj = JSON.parse(data);
 				var result = obj.find((element) => {
-					return (msg.toLowerCase() == element.title.toLowerCase());
+					return (msg.toLowerCase() == element.title.toLowerCase()) && (element.link != undefined);
 				});
 
 				if (result != undefined) {
+					console.log(result);
 					return interaction.reply({content: `${interaction.member.user} recommends [${result.title}](${result.link})! Check it out!`, ephemeral: false});
 				} else {
 					return interaction.reply({content: `Content ${msg} not found!`, ephemeral: true});
