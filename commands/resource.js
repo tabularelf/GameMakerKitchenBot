@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -6,15 +6,15 @@ module.exports = {
 		.setDescription('Links a resource, if it exists.')
 		.addStringOption(message => {
 			return message
-			.setName("message")
-			.setDescription("The contents of the message you'd like to send with")
+			.setName("resource")
+			.setDescription("The resource you'd like to recommend")
 			.setRequired(true)
 		}),
 	async execute(interaction) {
 		const http = require('http');
 		const fs = require('fs');
 
-		var msg = interaction.options.getString("message") ?? "";
+		var msg = interaction.options.getString("resource") ?? "";
 		msg = msg.toLowerCase();
 
 		const download = function(url, dest, cb) {
@@ -48,15 +48,40 @@ module.exports = {
   				obj = JSON.parse(data);
 				var result = obj.find((element) => {
 					if (element.label.includes("Tag")) return false;
-					return element.title.toLowerCase().includes(msg);
+					return element.title.toLowerCase().startsWith(msg);
 				});
+
+				// Deeper searching
+				if (result == undefined) {
+					var result = obj.find((element) => {
+						if (element.label.includes("Tag")) return false;
+						return element.title.toLowerCase().includes(msg);
+					});
+				}
 
 				if (result != undefined) {
 					let paid = "";
 					if (result.paid === true) {
 						paid = "💰";
 					}
-					return interaction.reply({content: `${interaction.member.user} recommends [${result.title}${paid}](${result.link ?? ("https://gamemakerkitchen.com" + result.value)})! Check it out!`, ephemeral: false});
+					
+					let url = result.link ?? ("https://gamemakerkitchen.com" + result.value);
+					const issuesEmbed = new EmbedBuilder()
+						.setColor(0x00CC00)
+						.setTitle(result.title + paid)
+						.setDescription(`${interaction.member.user} recommends you check out this resource!`)
+						.setURL(url)
+						.setTimestamp();
+
+						if (result.logo != undefined) {
+							let img = result.logo;
+							if (img.startsWith("/site-assets/")) {
+								img = `https://gamemakerkitche.com/${result.logo}`;
+							}
+							issuesEmbed.setThumbnail(img);
+						}
+
+						return interaction.reply({embeds: [issuesEmbed], fetchReply: true});
 				} else {
 					return interaction.reply({content: `Content ${msg} not found!`, ephemeral: true});
 				}
