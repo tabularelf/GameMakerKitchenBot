@@ -15,6 +15,6 @@ module.exports = {
             let emotePos = Math.floor(Math.random() * Emotes.length)
             await message.react(`👨‍🍳`);
             await message.react(Emotes[emotePos]);
-        }
+        } 
     }
 }

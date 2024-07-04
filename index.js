@@ -20,6 +20,8 @@ const client = new Client({ intents: [
 
 // Commmands
 client.commands = new Collection();
+client.cooldowns = new Collection();
+
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
@@ -42,6 +44,5 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
 
 client.login(token);
