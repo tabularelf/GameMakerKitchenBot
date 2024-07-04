@@ -15,6 +15,7 @@ module.exports = {
 		const fs = require('fs');
 
 		var msg = interaction.options.getString("message") ?? "";
+		msg = msg.toLowerCase();
 
 		const download = function(url, dest, cb) {
 		  var file = fs.createWriteStream(dest);
@@ -46,12 +47,16 @@ module.exports = {
   			if (err) throw err;
   				obj = JSON.parse(data);
 				var result = obj.find((element) => {
-					return (msg.toLowerCase() == element.title.toLowerCase()) && (element.link != undefined);
+					if (element.label.includes("Tag")) return false;
+					return element.title.toLowerCase().includes(msg);
 				});
 
 				if (result != undefined) {
-					console.log(result);
-					return interaction.reply({content: `${interaction.member.user} recommends [${result.title}](${result.link})! Check it out!`, ephemeral: false});
+					let paid = "";
+					if (result.paid === true) {
+						paid = "💰";
+					}
+					return interaction.reply({content: `${interaction.member.user} recommends [${result.title}${paid}](${result.link ?? ("https://gamemakerkitchen.com" + result.value)})! Check it out!`, ephemeral: false});
 				} else {
 					return interaction.reply({content: `Content ${msg} not found!`, ephemeral: true});
 				}
