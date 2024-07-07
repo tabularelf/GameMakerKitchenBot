@@ -87,7 +87,7 @@ module.exports = {
 		const resultEmbed = new EmbedBuilder()
 			.setColor(0x00CC00)
 			.setTitle(`Submission: ${thread.name}`)
-			.setDescription(`Submission made to GameMaker Kitchen Website repo!`)
+			.setDescription(`Submission made to GameMaker Kitchen Website repo! Please check the PR section!`)
 			.setURL('https://github.com/tabularelf/gamemaker-kitchen/pulls')
 			.setTimestamp();
 		
