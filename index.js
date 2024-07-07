@@ -18,6 +18,8 @@ const client = new Client({ intents: [
 	GatewayIntentBits.GuildMembers,
 ]});
 
+module.exports.client = client;
+
 // Commmands
 client.commands = new Collection();
 client.cooldowns = new Collection();
