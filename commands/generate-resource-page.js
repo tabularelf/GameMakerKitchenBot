@@ -28,7 +28,7 @@ module.exports = {
 				.setDescription('The type of resource this is')
 				.setRequired(true)
 				.addChoices(
-				{ name: 'Library', value: 'lib' },
+				{ name: 'Library', value: 'librarie' },
 				{ name: 'Tool', value: 'tool' },
 				{ name: 'Asset', value: 'asset' },
 				{ name: 'Tutorial', value: 'tutorial' },
@@ -92,7 +92,7 @@ module.exports = {
 		console.log("I have the PR!");
 		const resultEmbed = new EmbedBuilder()
 			.setColor(0x00CC00)
-			.setTitle(`Submission: ${thread.name}`)
+			.setTitle(`Submission: ${title}`)
 			.setDescription(`Submission made to GameMaker Kitchen Website repo! Please check the PR section!`)
 			.setURL('https://github.com/tabularelf/gamemaker-kitchen/pulls')
 			.setTimestamp();
