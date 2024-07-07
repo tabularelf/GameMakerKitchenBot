@@ -92,6 +92,6 @@ module.exports = {
 			.setURL(result.url)
 			.setTimestamp();
 		
-		await interaction.reply({ embeds: [issuesEmbed], fetchReply: true });
+		await interaction.reply({ embeds: [resultEmbed], fetchReply: true });
 	},
 };

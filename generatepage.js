@@ -184,7 +184,7 @@ module.exports = {
             tags: data.tags.split(','),
             authors: authors,
         }
-        
+
         return GenerateYAML(resourceData, data.firstMessage.content, data.type);
     }
 }
@@ -230,7 +230,7 @@ const CreatePR = async function(data, type, content) {
     });
 
     console.log("Creating PR");
-    await octokit.pulls.create({
+    octokit.pulls.create({
         repo: repoName,
         owner: owner,
         title: `Submission: ${data.title}`,
