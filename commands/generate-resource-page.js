@@ -68,9 +68,9 @@ module.exports = {
 		const paid = interaction.options.getBoolean("paid");
 
 		interaction.deferReply();
-
+		var result;
 		await thread.messages.fetch(true).then(messages => {
-			let result = GeneratePageFromCommand({
+			result = GeneratePageFromCommand({
 				thread: thread,
 				link: link,
 				docs: docs,
