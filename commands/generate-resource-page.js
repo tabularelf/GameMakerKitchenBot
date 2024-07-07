@@ -83,6 +83,7 @@ module.exports = {
 			});
 		});
 
+		console.log(result);
 		if (result.url != undefined) {
 			const resultEmbed = new EmbedBuilder()
 				.setColor(0x00CC00)
