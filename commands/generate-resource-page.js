@@ -80,7 +80,7 @@ module.exports = {
 				type: type,
 				paid: paid
 			});
-		}).then(result) => {
+		}).then(result => {
 			console.log("I have the PR!");
 			console.log(result);
 			const resultEmbed = new EmbedBuilder()
