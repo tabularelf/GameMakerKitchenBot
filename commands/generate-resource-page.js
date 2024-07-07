@@ -67,7 +67,7 @@ module.exports = {
 		const docs = interaction.options.getString("docs") ?? undefined;
 		const paid = interaction.options.getBoolean("paid");
 
-		interaction.deferReply();
+		await interaction.deferReply();
 		var result;
 		await thread.messages.fetch(true).then(messages => {
 			result = GeneratePageFromCommand({
