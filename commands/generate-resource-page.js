@@ -68,9 +68,8 @@ module.exports = {
 		const paid = interaction.options.getBoolean("paid");
 
 		await interaction.deferReply();
-		var result;
-		await thread.messages.fetch(true).then(messages => {
-			result = GeneratePageFromCommand({
+		thread.messages.fetch(true).then(messages => {
+			return GeneratePageFromCommand({
 				thread: thread,
 				link: link,
 				docs: docs,
@@ -81,17 +80,17 @@ module.exports = {
 				type: type,
 				paid: paid
 			});
-		});
-
-		console.log("I have the PR!");
-		console.log(result);
-		const resultEmbed = new EmbedBuilder()
+		}).then(result) => {
+			console.log("I have the PR!");
+			console.log(result);
+			const resultEmbed = new EmbedBuilder()
 			.setColor(0x00CC00)
 			.setTitle(`Submission: ${thread.name}`)
 			.setDescription(`Submission made!`)
 			.setURL(result.url)
 			.setTimestamp();
 		
-		await interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
+			await interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
+		});
 	},
 };

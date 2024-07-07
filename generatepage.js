@@ -189,7 +189,7 @@ module.exports = {
     }
 }
 
-const GenerateYAML = function (resourceData, contents, type) {
+const GenerateYAML = async function (resourceData, contents, type) {
     let str = "---\n" + YAML.stringify(resourceData) + "---" + "\n" + contents;
     try {
         fs.mkdirSync(`src/${type}s/${resourceData.authors[0]}`, {recursive: true});
@@ -241,7 +241,7 @@ const CreatePR = async function(data, type, content) {
         maintainer_can_modify: true,
     }).then((prResult) => {
         console.log("Returning response to Discord");
-        
+        console.log(result);
         result = {
             url: prResult.url + "/" + String(prResult.data.number),
         };
