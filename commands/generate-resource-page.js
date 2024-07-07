@@ -90,7 +90,7 @@ module.exports = {
 			.setURL(result.url)
 			.setTimestamp();
 		
-			await interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
+			interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
 		});
 	},
 };
