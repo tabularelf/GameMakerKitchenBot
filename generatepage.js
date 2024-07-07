@@ -244,7 +244,7 @@ const CreatePR = async function(data, type, content) {
         
         console.log(result);
         return {
-            url: result.data.url,
+            url: result.url + "/" + String(result.data.number),
         };
     })
 }
