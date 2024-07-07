@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const DESTINATED_CHANNEL = '1179825156680601630';
 const { GeneratePageFromCommand } = require('../generatepage.js');
 
 module.exports = {
@@ -56,6 +55,11 @@ module.exports = {
 			return option
 			.setName("docs")
 			.setDescription("The docs link to the associated resource")
+		})
+		.addStringOption(option => {
+			return option
+			.setName("title")
+			.setDescription("The name of the associated resource")
 		}),
 	async execute(interaction) {
 		const thread = interaction.options.getChannel("thread");
@@ -64,14 +68,16 @@ module.exports = {
 		const tags = interaction.options.getString("tags");
 		const authors = interaction.options.getString("authors");
 		const type = interaction.options.getString("type");
-		const docs = interaction.options.getString("docs") ?? undefined;
+		const docs = interaction.options.getString("docs") ?? "";
 		const paid = interaction.options.getBoolean("paid");
+		const title = interaction.options.getString("title") ?? thread.name;
 
 		await interaction.deferReply();
 		var result;
 		await thread.messages.fetch(true).then(messages => {
 			result = GeneratePageFromCommand({
 				thread: thread,
+				title: title,
 				link: link,
 				docs: docs,
 				firstMessage: messages.last(),

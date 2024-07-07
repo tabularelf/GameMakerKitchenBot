@@ -174,7 +174,7 @@ module.exports = {
 
 
         let resourceData = {
-            title: data.thread.name,
+            title: data.title,
             link: data.link,
             description: data.description,
             threadLink: `https://discord.com/channels/${data.thread.guildId}/${data.thread.id}`,
