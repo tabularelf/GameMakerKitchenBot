@@ -209,7 +209,7 @@ const CreatePR = async function(data, type, content) {
     const repoName = 'GameMaker-Kitchen';
     const owner = 'tabularelf';
 
-    var path = Path.resolve(`${repoPath}/src/${type}/${data.authors[0]}/${data.title}.md`).slice(1);
+    var path = `src/${type}/${data.authors[0]}/${data.title}.md`;
     console.log(data);
     console.log(path);
     console.log("Creating file");
