@@ -8,7 +8,7 @@ const { Base64 } = require('js-base64');
 const Path = require("path");
 const octokit = new Octokit({ auth: githubToken });
 const repoPath = '../GameMakerKitchen-Website'
-const cyrpto = require('crypto');
+const crypto = require('crypto');
 
 
 module.exports = {
