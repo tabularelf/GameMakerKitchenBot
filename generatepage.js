@@ -8,6 +8,7 @@ const { Base64 } = require('js-base64');
 const Path = require("path");
 const octokit = new Octokit({ auth: githubToken });
 const repoPath = '../GameMakerKitchen-Website'
+const cyrpto = require('crypto');
 
 
 module.exports = {
@@ -219,6 +220,7 @@ const CreatePR = async function(data, type, content) {
         path: path,
         message: `Automation: file ${data.title}.md added`,
         content: Base64.encode(content),
+        sha: crypto.createHash('sha1').update(fs.readFileSync(path)).digest('hex'),
         'committer.name': 'GameMakerKitchen-Bot',
         'committer.email': 'tabularelf@gmail.com',
         'branch': 'botprbranch',
