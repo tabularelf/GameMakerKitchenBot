@@ -83,16 +83,15 @@ module.exports = {
 			});
 		});
 
+		console.log("I have the PR!");
 		console.log(result);
-		if (result.url != undefined) {
-			const resultEmbed = new EmbedBuilder()
-				.setColor(0x00CC00)
-				.setTitle(`Submission: ${thread.name}`)
-				.setDescription(`Submission made!`)
-				.setURL(result.url)
-				.setTimestamp();
-			
-			return interaction.reply({ embeds: [issuesEmbed], fetchReply: true });
-		}
+		const resultEmbed = new EmbedBuilder()
+			.setColor(0x00CC00)
+			.setTitle(`Submission: ${thread.name}`)
+			.setDescription(`Submission made!`)
+			.setURL(result.url)
+			.setTimestamp();
+		
+		await interaction.reply({ embeds: [issuesEmbed], fetchReply: true });
 	},
 };

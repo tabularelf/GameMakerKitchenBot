@@ -184,9 +184,8 @@ module.exports = {
             tags: data.tags.split(','),
             authors: authors,
         }
-
-        let pr = GenerateYAML(resourceData, data.firstMessage.content, data.type);
-        return pr;
+        
+        return GenerateYAML(resourceData, data.firstMessage.content, data.type);
     }
 }
 
@@ -242,7 +241,6 @@ const CreatePR = async function(data, type, content) {
     }).then((result) => {
         console.log("Returning response to Discord");
         
-        console.log(result);
         return {
             url: result.url + "/" + String(result.data.number),
         };
