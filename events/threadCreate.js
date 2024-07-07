@@ -1,5 +1,6 @@
 const { Events } = require('discord.js');
 const { GeneratePageFromText } = require("../generatepage.js");
+const DESTINATED_CHANNEL = '1179825156680601630';
 
 module.exports = {
 	name: Events.ThreadCreate,
@@ -20,6 +21,9 @@ module.exports = {
 				}
 			});
 
+			if (thread.parentId == DESTINATED_CHANNEL) {
+				await thread.send('Use `/generate-resource-page` to generate a PR for GameMaker Kitchen\'s website! ฅ^•ﻌ•^ฅ');
+			}
 			//GeneratePageFromText(thread, firstMessage);
 		}, 1000);
 	}
