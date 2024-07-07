@@ -216,7 +216,7 @@ const CreatePR = async function(data, type, content) {
     console.log("Creating file");
     let stats = fs.statSync(path);
     let sha = crypto.createHash('sha1').update("blob " + String(stats.size) + fs.readFileSync(path)).digest('hex');
-    console.log(`SHA1: ${sha}`);
+    console.log(`SHA1: ${sha}\nSize: ${stats.size}\nContents: ${fs.readFileSync(path)}`);
     let file = await octokit.rest.repos.createOrUpdateFileContents({
         owner: 'GameMakerKitchen-Bot',
         repo: repoName,
