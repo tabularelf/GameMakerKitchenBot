@@ -181,8 +181,8 @@ module.exports = {
             docs: data.docs,
             paid: data.paid,
             date: date,
-            tags: data.tags.split(','),
-            authors: authors,
+            tags: data.tags.split(',').map(str => str.trim()),
+            authors: newAuthors,
         }
 
         return GenerateYAML(resourceData, data.firstMessage.content, data.type);
