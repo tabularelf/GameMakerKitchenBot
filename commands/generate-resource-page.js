@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { GeneratePageFromCommand } = require('../generatepage.js');
+const DESTINATED_CHANNEL = '1047095400278020136';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -71,6 +72,10 @@ module.exports = {
 		const docs = interaction.options.getString("docs") ?? "";
 		const paid = interaction.options.getBoolean("paid");
 		const title = interaction.options.getString("title") ?? thread.name;
+		if (thread.parentId != DESTINATED_CHANNEL) {
+			return interaction.reply({content: `${thread.name} is not a valid resource!`, ephemeral: true});
+		}
+		return interaction.reply(thread.name);
 
 		await interaction.deferReply();
 		var result;
@@ -97,6 +102,6 @@ module.exports = {
 			.setURL('https://github.com/tabularelf/gamemaker-kitchen/pulls')
 			.setTimestamp();
 		
-		await interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
+		await interaction.followUp({ embeds: [resultEmbed], fetchReply: true});
 	},
 };
