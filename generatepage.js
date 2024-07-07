@@ -239,10 +239,10 @@ const CreatePR = async function(data, type, content) {
         base: "master",
         body: `Automation: Submission ${data.title}`,
         maintainer_can_modify: true,
-    }).then(result) {
+    }).then((result) => {
         console.log("Returning response to Discord");
         return result;
-    }
+    })
 }
 
 const GenerateDate = function (timestamp) {
