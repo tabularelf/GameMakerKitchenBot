@@ -68,8 +68,8 @@ module.exports = {
 		const paid = interaction.options.getBoolean("paid");
 
 		await interaction.deferReply();
-		thread.messages.fetch(true).then(messages => {
-			return GeneratePageFromCommand({
+		thread.messages.fetch(true).then(messages => 
+			GeneratePageFromCommand({
 				thread: thread,
 				link: link,
 				docs: docs,
@@ -79,8 +79,7 @@ module.exports = {
 				authors: authors,
 				type: type,
 				paid: paid
-			});
-		}).then(result => {
+			})).then(result => {
 			console.log("I have the PR!");
 			console.log(result);
 			const resultEmbed = new EmbedBuilder()
