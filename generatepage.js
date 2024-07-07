@@ -242,6 +242,7 @@ const CreatePR = async function(data, type, content) {
     }).then((result) => {
         console.log("Returning response to Discord");
         
+        console.log(result);
         return {
             url: result.data.url,
         };
