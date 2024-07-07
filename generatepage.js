@@ -18,7 +18,7 @@ module.exports = {
                 let contents = firstMessage.content;
                 let link, docs, tags, authors, description;
                 authors = undefined;
-                let linkPos = contents.toLowerCase().indexOf('!link');
+                let linkPos = contents.to-LowerCase().indexOf('!link');
                 let docsPos = contents.toLowerCase().indexOf('!docs');
                 let tagsPos = contents.toLowerCase().indexOf('!tags');
                 let authorsPos = contents.toLowerCase().indexOf('!authors');
@@ -209,7 +209,7 @@ const CreatePR = async function(data, type, content) {
     const repoName = 'GameMaker-Kitchen';
     const owner = 'tabularelf';
 
-    var path = Path.resolve(`${repoPath}/src/${type}/${data.authors[0]}/${data.title}.md`);
+    var path = Path.resolve(`${repoPath}/src/${type}/${data.authors[0]}/${data.title}.md`).slice(1);
     console.log(data);
     console.log(path);
     console.log("Creating file");
