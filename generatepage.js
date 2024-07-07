@@ -230,6 +230,7 @@ const CreatePR = async function(data, type, content) {
     });
 
     console.log("Creating PR");
+    var result = undefined;
     octokit.pulls.create({
         repo: repoName,
         owner: owner,
@@ -241,7 +242,7 @@ const CreatePR = async function(data, type, content) {
     }).then((result) => {
         console.log("Returning response to Discord");
         
-        return {
+        result = {
             url: result.url + "/" + String(result.data.number),
         };
     })
