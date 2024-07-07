@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 const { GeneratePageFromText } = require("../generatepage.js");
-const DESTINATED_CHANNEL = '1179825156680601630';
+const DESTINATED_CHANNEL = '1047095400278020136';
 
 module.exports = {
 	name: Events.ThreadCreate,
