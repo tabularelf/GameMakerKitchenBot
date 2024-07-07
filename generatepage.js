@@ -231,7 +231,7 @@ const CreatePR = async function(data, type, content) {
     });
 
     console.log("Creating PR");
-    let pr = await octokit.pulls.create({
+    await octokit.pulls.create({
         repo: repoName,
         owner: owner,
         title: `Submission: ${data.title}`,
@@ -239,10 +239,10 @@ const CreatePR = async function(data, type, content) {
         base: "master",
         body: `Automation: Submission ${data.title}`,
         maintainer_can_modify: true,
-    });
-
-    console.log("Returning response to Discord");
-    return pr;
+    }).then(result) {
+        console.log("Returning response to Discord");
+        return result;
+    }
 }
 
 const GenerateDate = function (timestamp) {
