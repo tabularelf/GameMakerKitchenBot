@@ -239,11 +239,11 @@ const CreatePR = async function(data, type, content) {
         base: "master",
         body: `Automation: Submission ${data.title}`,
         maintainer_can_modify: true,
-    }).then((result) => {
+    }).then((prResult) => {
         console.log("Returning response to Discord");
         
         result = {
-            url: result.url + "/" + String(result.data.number),
+            url: prResult.url + "/" + String(prResult.data.number),
         };
     });
 
