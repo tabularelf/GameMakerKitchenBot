@@ -245,7 +245,9 @@ const CreatePR = async function(data, type, content) {
         result = {
             url: result.url + "/" + String(result.data.number),
         };
-    })
+    });
+
+    return result;
 }
 
 const GenerateDate = function (timestamp) {
