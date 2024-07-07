@@ -68,8 +68,9 @@ module.exports = {
 		const paid = interaction.options.getBoolean("paid");
 
 		await interaction.deferReply();
-		thread.messages.fetch(true).then(messages => 
-			GeneratePageFromCommand({
+		var result;
+		await thread.messages.fetch(true).then(messages => {
+			result = GeneratePageFromCommand({
 				thread: thread,
 				link: link,
 				docs: docs,
@@ -79,17 +80,17 @@ module.exports = {
 				authors: authors,
 				type: type,
 				paid: paid
-			})).then(result => {
-			console.log("I have the PR!");
-			console.log(result);
-			const resultEmbed = new EmbedBuilder()
+			});
+		});
+
+		console.log("I have the PR!");
+		const resultEmbed = new EmbedBuilder()
 			.setColor(0x00CC00)
 			.setTitle(`Submission: ${thread.name}`)
-			.setDescription(`Submission made!`)
-			.setURL(result.url)
+			.setDescription(`Submission made to GameMaker Kitchen Website repo!`)
+			.setURL('https://github.com/tabularelf/gamemaker-kitchen/pulls')
 			.setTimestamp();
 		
-			interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
-		});
+		await interaction.followUp({ embeds: [resultEmbed], fetchReply: true });
 	},
 };

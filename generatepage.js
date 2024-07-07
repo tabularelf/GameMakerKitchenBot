@@ -230,7 +230,6 @@ const CreatePR = async function(data, type, content) {
     });
 
     console.log("Creating PR");
-    var result = undefined;
     octokit.pulls.create({
         repo: repoName,
         owner: owner,
@@ -239,15 +238,11 @@ const CreatePR = async function(data, type, content) {
         base: "master",
         body: `Automation: Submission ${data.title}`,
         maintainer_can_modify: true,
-    }).then((prResult) => {
-        console.log("Returning response to Discord");
-        console.log(result);
-        result = {
-            url: prResult.url + "/" + String(prResult.data.number),
-        };
-    });
+    })
 
-    return result;
+    // I'd return something, but it turns out that there's nothing I can return?
+    // TODO: Fix this shit
+    return;
 }
 
 const GenerateDate = function (timestamp) {
