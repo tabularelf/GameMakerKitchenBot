@@ -214,13 +214,14 @@ const CreatePR = async function(data, type, content) {
     console.log(data);
     console.log(path);
     console.log("Creating file");
+    let stats = fs.statSync(path);
     let file = await octokit.rest.repos.createOrUpdateFileContents({
         owner: 'GameMakerKitchen-Bot',
         repo: repoName,
         path: path,
         message: `Automation: file ${data.title}.md added`,
         content: Base64.encode(content),
-        sha: crypto.createHash('sha1').update(fs.readFileSync(path)).digest('hex'),
+        sha: crypto.createHash('sha1').update("blob " + String(stats.size) + fs.readFileSync(path)).digest('hex'),
         'committer.name': 'GameMakerKitchen-Bot',
         'committer.email': 'tabularelf@gmail.com',
         'branch': 'botprbranch',
