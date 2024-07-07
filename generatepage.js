@@ -192,12 +192,12 @@ module.exports = {
 const GenerateYAML = function (resourceData, contents, type) {
     let str = "---\n" + YAML.stringify(resourceData) + "---" + "\n" + contents;
     try {
-        fs.mkdirSync(`${repoPath}/src/${type}/${resourceData.authors[0]}`, {recursive: true});
+        fs.mkdirSync(`src/${type}/${resourceData.authors[0]}`, {recursive: true});
     } catch (err) {
         console.error(err);
     }
 
-    fs.writeFileSync(`${repoPath}/src/${type}/${resourceData.authors[0]}/${resourceData.title}.md`, str, err => {
+    fs.writeFileSync(`src/${type}/${resourceData.authors[0]}/${resourceData.title}.md`, str, err => {
         if (err) {
             console.log(err);
         }
