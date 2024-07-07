@@ -73,9 +73,8 @@ module.exports = {
 		const paid = interaction.options.getBoolean("paid");
 		const title = interaction.options.getString("title") ?? thread.name;
 		if (thread.parentId != DESTINATED_CHANNEL) {
-			return interaction.reply({content: `${thread.name} is not a valid resource!`, ephemeral: true});
+			return interaction.reply({content: `\`${thread.name}\` is not a valid resource!`, ephemeral: true});
 		}
-		return interaction.reply(thread.name);
 
 		await interaction.deferReply();
 		var result;
