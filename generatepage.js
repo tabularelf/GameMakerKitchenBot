@@ -217,7 +217,8 @@ const CreatePR = async function(data, type, content) {
     let stats = fs.statSync(path);
     let sha = crypto.createHash('sha1').update("blob " + String(stats.size) + '\x00' + fs.readFileSync(path)).digest('hex');
     console.log(`SHA1: ${sha}\nSize: ${stats.size}\nContents: ${fs.readFileSync(path)}`);
-    let file = await octokit.rest.repos.createOrUpdateFileContents({
+
+    await octokit.rest.repos.createOrUpdateFileContents({
         owner: owner,
         repo: repoName,
         path: path,
@@ -230,15 +231,20 @@ const CreatePR = async function(data, type, content) {
     });
 
     console.log("Creating PR");
-    octokit.pulls.create({
-        repo: repoName,
-        owner: owner,
-        title: `Submission: ${data.title}`,
-        head: 'tabularelf:botprbranch',
-        base: "master",
-        body: `Automation: Submission ${data.title}`,
-        maintainer_can_modify: true,
-    })
+    try {
+        octokit.pulls.create({
+            repo: repoName,
+            owner: owner,
+            title: `Submission: ${data.title}`,
+            head: 'tabularelf:botprbranch',
+            base: "master",
+            body: `Automation: Submission ${data.title}`,
+            maintainer_can_modify: true,
+        });
+    } catch(error) {
+        console.log("attempted to do a double PR. Possibly has already being created!");
+        console.log(error);
+    }
 
     // I'd return something, but it turns out that there's nothing I can return?
     // TODO: Fix this shit
