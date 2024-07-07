@@ -186,7 +186,7 @@ module.exports = {
         }
 
         let pr = GenerateYAML(resourceData, data.firstMessage.content, data.type);
-        
+        return pr;
     }
 }
 
