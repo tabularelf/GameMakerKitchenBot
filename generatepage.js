@@ -185,7 +185,8 @@ module.exports = {
             authors: authors,
         }
 
-        GenerateYAML(resourceData, data.firstMessage.content, data.type);
+        let pr = GenerateYAML(resourceData, data.firstMessage.content, data.type);
+        
     }
 }
 
@@ -203,7 +204,7 @@ const GenerateYAML = function (resourceData, contents, type) {
         }
     });
 
-    CreatePR(resourceData, type, str)
+    return CreatePR(resourceData, type, str)
 }
 
 const CreatePR = async function(data, type, content) {
@@ -230,7 +231,7 @@ const CreatePR = async function(data, type, content) {
     });
 
     console.log("Creating PR");
-    await octokit.pulls.create({
+    let pr = await octokit.pulls.create({
         repo: repoName,
         owner: owner,
         title: `Submission: ${data.title}`,
@@ -239,6 +240,9 @@ const CreatePR = async function(data, type, content) {
         body: `Automation: Submission ${data.title}`,
         maintainer_can_modify: true,
     });
+
+    console.log("Returning response to Discord");
+    return pr;
 }
 
 const GenerateDate = function (timestamp) {

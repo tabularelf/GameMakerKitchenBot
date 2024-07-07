@@ -66,8 +66,11 @@ module.exports = {
 		const type = interaction.options.getString("type");
 		const docs = interaction.options.getString("docs") ?? undefined;
 		const paid = interaction.options.getBoolean("paid");
+
+		interaction.deferReply();
+
 		await thread.messages.fetch(true).then(messages => {
-			return GeneratePageFromCommand({
+			let result = GeneratePageFromCommand({
 				thread: thread,
 				link: link,
 				docs: docs,
@@ -79,5 +82,16 @@ module.exports = {
 				paid: paid
 			});
 		});
+
+		if (result.url != undefined) {
+			const resultEmbed = new EmbedBuilder()
+				.setColor(0x00CC00)
+				.setTitle(`Submission: ${thread.name}`)
+				.setDescription(`Submission made!`)
+				.setURL(result.url)
+				.setTimestamp();
+			
+			return interaction.reply({ embeds: [issuesEmbed], fetchReply: true });
+		}
 	},
 };
