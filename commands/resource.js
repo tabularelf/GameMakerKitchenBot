@@ -64,12 +64,13 @@ module.exports = {
 					if (result.paid === true) {
 						paid = "💰";
 					}
-
-					let url = result.link ?? ("https://gamemakerkitchen.com" + result.value);
+					
+					let defaultURL = "https://gamemakerkitchen.com" + result.value;
+					let url = result.link ?? defaultURL;
 					const issuesEmbed = new EmbedBuilder()
 						.setColor(0x00CC00)
 						.setTitle(result.title + paid)
-						.setDescription(`${interaction.member.user} recommends you check out this resource!`)
+						.setDescription(`Check out this resource ${result.title}!\nFetched from ${defaultURL}.`)
 						.setURL(url)
 						.setTimestamp();
 
