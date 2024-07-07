@@ -7,6 +7,7 @@ const { githubToken } = require('./config.json');
 const { Base64 } = require('js-base64');
 const Path = require("path");
 const octokit = new Octokit({ auth: githubToken });
+const repoPath = '../GameMakerKitchen-Website'
 
 
 module.exports = {
@@ -190,12 +191,12 @@ module.exports = {
 const GenerateYAML = function (resourceData, contents, type) {
     let str = "---\n" + YAML.stringify(resourceData) + "---" + "\n" + contents;
     try {
-        fs.mkdirSync(`./.temp/github/src/${type}/${resourceData.authors[0]}`, {recursive: true});
+        fs.mkdirSync(`${repoPath}/src/${type}/${resourceData.authors[0]}`, {recursive: true});
     } catch (err) {
         console.error(err);
     }
 
-    fs.writeFileSync(`./.temp/github/src/${type}/${resourceData.authors[0]}/${resourceData.title}.md`, str, err => {
+    fs.writeFileSync(`${repoPath}/src/${type}/${resourceData.authors[0]}/${resourceData.title}.md`, str, err => {
         if (err) {
             console.log(err);
         }
@@ -208,12 +209,12 @@ const CreatePR = async function(data, type, content) {
     const repoName = 'GameMaker-Kitchen';
     const owner = 'tabularelf';
 
-    var path = Path.resolve(`.../.temp/github/src/${type}/${data.authors[0]}/${data.title}.md`);
+    var path = Path.resolve(`${repoPath}/src/${type}/${data.authors[0]}/${data.title}.md`);
     console.log(data);
     console.log(path);
     console.log("Creating file");
     let file = await octokit.rest.repos.createOrUpdateFileContents({
-        owner: owner,
+        owner: 'GameMakerKitchen-Bot',
         repo: repoName,
         path: path,
         message: `Automation: file ${data.title}.md added`,
