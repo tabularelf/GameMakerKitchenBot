@@ -241,6 +241,7 @@ const CreatePR = async function(data, type, content) {
         maintainer_can_modify: true,
     }).then((result) => {
         console.log("Returning response to Discord");
+        console.log(result);
         return result;
     })
 }
