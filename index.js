@@ -1,6 +1,7 @@
 
 // General Setup
 const { token, mongoDBAddress } = require('./config.json');
+const schedule = require('node-schedule');
 
 // MongoDB setup
 const mongoose = require('mongoose');
@@ -48,3 +49,31 @@ for (const file of eventFiles) {
 }
 
 client.login(token);
+
+const AutoDownloadSearchJSON = async function() {
+	const folderName = "./.temp/";
+	const searchFile = `${folderName}search.json`;
+	await download("http://www.gamemakerkitchen.com/search.json", searchFile, function(){
+		console.log("search.json downloaded!");
+	});
+}
+
+const http = require('http');
+
+const download = async function (url, dest, cb) {
+	var file = fs.createWriteStream(dest);
+	var request = http.get(url, function (response) {
+		response.pipe(file);
+		file.on('finish', function () {
+			file.close(cb);  // close() is async, call cb after close completes.
+		});
+	}).on('error', function (err) { // Handle errors
+		fs.unlink(dest); // Delete the file async. (But we don't check the result)
+		if (cb) cb(err.message);
+	});
+};
+
+var j = schedule.scheduleJob('0 0 */1 * * *', async function(){
+	await AutoDownloadSearchJSON();
+});
+AutoDownloadSearchJSON();

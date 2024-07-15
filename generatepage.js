@@ -182,7 +182,7 @@ module.exports = {
             paid: data.paid,
             date: date,
             tags: data.tags.split(',').map(str => str.trim()),
-            authors: newAuthors,
+            authors: newAuthors.map(str => str.trim()),
         }
 
         return GenerateYAML(resourceData, data.firstMessage.content, data.type);
@@ -210,7 +210,12 @@ const CreatePR = async function(data, type, content) {
     const repoName = 'GameMaker-Kitchen';
     const owner = 'tabularelf';
 
-    var path = `src/${type}s/${data.authors[0]}/${data.title}.md`;
+    var pathType = type;
+    switch(type) {
+        case 'library': pathType = 'librarie'; break;
+    }
+
+    var path = `src/${pathType}s/${data.authors[0]}/${data.title}.md`;
     console.log(data);
     console.log(path);
     console.log("Creating file");
