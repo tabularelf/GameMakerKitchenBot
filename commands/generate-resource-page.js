@@ -69,6 +69,17 @@ module.exports = {
 		const docs = interaction.options.getString("docs") ?? "";
 		const paid = interaction.options.getBoolean("paid");
 		const title = interaction.options.getString("title") ?? thread.name;
+		
+		const FetchType = async function(typeTags) {
+			return typeTags.filter(type => {
+				return type === "tool" || 
+						type === "library" || 
+						type === "asset" ||
+						type === "tutorial" ||
+						type === "snippet"
+			});
+		}
+		
 		if (thread.parentId !== DESTINATED_CHANNEL) {
 			return interaction.reply({content: `\`${thread.name}\` is not a valid resource!`, ephemeral: true});
 		}
@@ -81,6 +92,11 @@ module.exports = {
 		if (index !== 1) {
 			threadTags.splice(index, 1);
 		}
+		
+		var typeExt = type ?? FetchType(threadTags)[0];
+		
+		
+		
 		await thread.messages.fetch(true).then(messages => {
 			result = GeneratePageFromCommand({
 				thread: thread,
@@ -91,7 +107,7 @@ module.exports = {
 				tags: tags,
 				description: description,
 				authors: authors,
-				type: type ?? threadTags[0],
+				type: typeExt,
 				paid: paid ?? paidTag
 			});
 		});
