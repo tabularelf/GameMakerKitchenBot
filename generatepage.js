@@ -9,6 +9,7 @@ const Path = require("path");
 const octokit = new Octokit({ auth: githubToken });
 const repoPath = '../GameMakerKitchen-Website'
 const crypto = require('crypto');
+const charWhitelist = /[^\w\s]/gi;
 
 
 module.exports = {
@@ -197,7 +198,7 @@ const GenerateYAML = async function (resourceData, contents, type) {
         console.error(err);
     }
 
-    fs.writeFileSync(`src/${type}s/${resourceData.authors[0]}/${resourceData.title}.md`, str, err => {
+    fs.writeFileSync(`src/${type}s/${resourceData.authors[0].replace(charWhitelist, '').trim()}/${resourceData.title}.md`, str, err => {
         if (err) {
             console.log(err);
         }
