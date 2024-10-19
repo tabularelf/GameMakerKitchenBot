@@ -15,7 +15,12 @@ module.exports = {
 			return message
 			.setName("message")
 			.setDescription("The contents of the message you'd like to send with")
-		}),
+		})
+		.addBooleanOption(message => {
+			return message
+			.setName("newlines")
+			.setDescription("Whether to escape all newlines or not. Default is false.")
+		},
 	async execute(interaction) {
 
 		// Make sure role/user exists
@@ -38,6 +43,9 @@ module.exports = {
 
 
 		let msg = interaction.options.getString("message") ?? "";
+		if(interaction.options.getBoolean("newlines") ?? false) {
+			msg = msg.replaceAll("\\n", "\n"); 
+		}			
 		//interaction.deferReply();
 		//interaction.deleteReply();
 		await interaction.channel.send(`${interaction.options.getRole("role")} ${msg}`);

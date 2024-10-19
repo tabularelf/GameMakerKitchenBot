@@ -95,6 +95,12 @@ module.exports = {
 		
 		var typeExt = type ?? FetchType(threadTags)[0];
 		
+		if (typeExt === undefined) {
+			return interaction.followUp({ content: "An error occurred while processing the type! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread:${}"
+				epemeral: true,
+			});
+		}
+		
 		
 		
 		await thread.messages.fetch(true).then(messages => {
