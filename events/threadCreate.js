@@ -22,7 +22,7 @@ module.exports = {
 			});
 
 			if (thread.parentId == DESTINATED_CHANNEL) {
-				await thread.send('Use `/generate-resource-page` to generate a PR for GameMaker Kitchen\'s website! ฅ^•ﻌ•^ฅ');
+				//await thread.send('Use `/generate-resource-page` to generate a PR for GameMaker Kitchen\'s website! ฅ^•ﻌ•^ฅ');
 			}
 			//GeneratePageFromText(thread, firstMessage);
 		}, 1000);

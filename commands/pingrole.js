@@ -20,7 +20,7 @@ module.exports = {
 			return message
 			.setName("newlines")
 			.setDescription("Whether to escape all newlines or not. Default is false.")
-		},
+		}),
 	async execute(interaction) {
 
 		// Make sure role/user exists
