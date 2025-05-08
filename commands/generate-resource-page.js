@@ -97,7 +97,7 @@ module.exports = {
 		var typeExt = type ?? FetchType(threadTags)[0];
 		
 		if (typeExt === undefined) {
-			return interaction.followUp({ content: `An error occurred while processing the type! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread: ${thread}\nLink: ${link}\nDesc: ${description}\n:Tags ${tags}\nAuthors: ${authors}\nType: ${type}\nDocs: ${docs}\nPaid: ${paid}\nTitle: ${title}`});
+			return interaction.followUp({ content: `An error occurred while processing the type! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread: ${thread}\nLink: ${link}\nDesc: ${description}\nTags: ${tags}\nAuthors: ${authors}\nType: ${typeExt}\nDocs: ${docs}\nPaid: ${paid}\nTitle: ${title}`});
 		}
 		
 		
