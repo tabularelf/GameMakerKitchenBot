@@ -10,14 +10,19 @@ mongoose.connect(mongoDBAddress).then(console.log('Connected to Mongodb.'));
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
+projectRootPath = __dirname;
 
 const client = new Client({ intents: [
 	GatewayIntentBits.Guilds,
 	GatewayIntentBits.GuildMessages,
 	GatewayIntentBits.MessageContent,
 	GatewayIntentBits.GuildMembers,
-]});
+	GatewayIntentBits.GuildMessageReactions,
+	GatewayIntentBits.DirectMessageReactions,
+	],
+	partials: [Partials.Message, Partials.User, Partials.Reaction]
+});
 
 module.exports.client = client;
 

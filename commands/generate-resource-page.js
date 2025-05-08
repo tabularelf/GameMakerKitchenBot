@@ -72,11 +72,12 @@ module.exports = {
 		
 		const FetchType = async function(typeTags) {
 			return typeTags.filter(type => {
-				return type === "tool" || 
-						type === "library" || 
-						type === "asset" ||
-						type === "tutorial" ||
-						type === "snippet"
+				return type == "tool" || 
+						type == "library" || 
+						type == "asset" ||
+						type == "tutorial" ||
+						type == "snippet" ||
+						type == "plugin"
 			});
 		}
 		
@@ -96,7 +97,7 @@ module.exports = {
 		var typeExt = type ?? FetchType(threadTags)[0];
 		
 		if (typeExt === undefined) {
-			return interaction.followUp({ content: "An error occurred while processing the type! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread:${}"});
+			return interaction.followUp({ content: `An error occurred while processing the type! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread: ${thread}\nLink: ${link}\nDesc: ${description}\n:Tags ${tags}\nAuthors: ${authors}\nType: ${type}\nDocs: ${docs}\nPaid: ${paid}\nTitle: ${title}`});
 		}
 		
 		
