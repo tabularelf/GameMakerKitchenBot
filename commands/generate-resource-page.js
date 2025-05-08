@@ -70,7 +70,7 @@ module.exports = {
 		const paid = interaction.options.getBoolean("paid");
 		const title = interaction.options.getString("title") ?? thread.name;
 		
-		const FetchType = async function(typeTags) {
+		const FetchType = function(typeTags) {
 			return typeTags.filter(type => {
 				return type == "tool" || 
 						type == "library" || 
@@ -93,8 +93,8 @@ module.exports = {
 		if (index !== 1) {
 			threadTags.splice(index, 1);
 		}
-		
-		var typeExt = type ?? FetchType(threadTags)[0];
+		let fetchedTags = FetchType(threadTags);
+		var typeExt = type ?? fetchedTags[0];
 		
 		if (typeExt === undefined) {
 			return interaction.followUp({ content: `An error occurred while processing the type! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread: ${thread}\nLink: ${link}\nDesc: ${description}\nTags: ${tags}\nAuthors: ${authors}\nType: ${typeExt}\nDocs: ${docs}\nPaid: ${paid}\nTitle: ${title}`});
