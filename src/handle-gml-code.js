@@ -83,11 +83,15 @@ module.exports = async function(message) {
     if (outputCodes.length > 0) {
         const codeConcats = outputCodes.map(outputCode => `\`\`\`gml\n${outputCode}\`\`\``);
         const outputMessage = codeConcats.join('\n');
-        if (outputMessage.length < 4000) {
-          await message.reply(outputMessage);
+        if (outputMessage.length < 2000) {
+          await message.reply({content: outputMessage, allowedMentions: {repliedUser: false}});
         } else {
           for (const codeConcat of codeConcats) {
-            await message.reply(codeConcat);
+            if (codeConcat.length < 2000) {
+                await message.reply({content: codeConcat, allowedMentions: {repliedUser: false}});
+            } else {
+                await message.reply({content: `Code block was too long. Got ${codeConcat.length}, expected 2000 or less.`, allowedMentions: {repliedUser: false}})
+            }
           }
         }
       }

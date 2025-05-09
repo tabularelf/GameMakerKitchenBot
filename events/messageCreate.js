@@ -71,8 +71,8 @@ module.exports = {
                 response += "```" + resultMatch.extension + `\n${resultMatch.toDisplay}\n` + "```\n";
             }
 
-            if (response.length > 4000) {
-                response = `The message length was too long. Got ${response.length}, expected 4000 or less.`;
+            if (response.length > 2000) {
+                response = `The associated link contents was too long. Got ${response.length}, expected 2000 or less.`;
             } if (response.length == 0) {
                 return;
             }
