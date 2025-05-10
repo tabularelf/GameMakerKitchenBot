@@ -10,6 +10,7 @@ module.exports = {
 			.setName("role")
 			.setDescription("Role you wish to add")
 			.setRequired(true)
+            .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         })
 		.addUserOption(user => {
 			return user

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -9,6 +9,7 @@ module.exports = {
 			.setName("message")
 			.setDescription("The contents of the message you'd like to send with")
 			.setRequired(true)
+			.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 		}),
 	async execute(interaction) {
 		let msg = interaction.options.getString("message") ?? "";
