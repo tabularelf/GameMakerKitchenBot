@@ -1,5 +1,6 @@
 const { Events } = require('discord.js');
 const handleGMLCodeBlock = require('../src/handle-gml-code.js');
+const { client } = require('../index.js');
 
 module.exports = {
 	name: Events.MessageReactionAdd,
@@ -39,15 +40,19 @@ module.exports = {
 async function handleWandReacts(reaction, user) {
     if (reaction.emoji.name !== '🪄') return;
     const message = await reaction.message.fetch();
-    await handleGMLCodeBlock(message);
+    if (!message.author.bot) {
+        await handleGMLCodeBlock(message);
+    }
 }
 
 async function handleWandForceReacts(reaction, user) {
     if (reaction.emoji.name !== '🪄' && reaction.emoji.name !== '🇫') return;
     const message = await reaction.message.fetch();
-    const filter = (reaction) => {return reaction === '🪄' || reaction === '🇫'};
-    const reactions = [...message.reactions.cache.keys()].filter(filter);
-    if (reactions.length === 2) {
-        await handleGMLCodeBlock(message, true);
+    if (!message.author.bot) {
+        const filter = (reaction) => {return reaction === '🪄' || reaction === '🇫'};
+        const reactions = [...message.reactions.cache.keys()].filter(filter);
+        if (reactions.length === 2) {
+            await handleGMLCodeBlock(message, true);
+        }
     }
 }
