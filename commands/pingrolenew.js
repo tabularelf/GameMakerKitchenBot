@@ -38,7 +38,7 @@ module.exports = {
 
 		const modal = new ModalBuilder()
 			.setCustomId(performTest ? 'pingRoleTest' : 'pingRole')
-			.setTitle('Ping role');
+			.setTitle('Ping role' + performTest ? ' (Test mode)' : '');
 
 		const roleInput = new TextInputBuilder()
 			.setCustomId('roleInput')
