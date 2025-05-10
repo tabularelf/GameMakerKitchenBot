@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const folderName = "./.temp/";
 const searchFile = `${folderName}resource.json`;
 const fs = require('fs');
-
+const { extractOwnerRepo, getLatestGithubRelease } = require('../src/utilities.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -49,18 +49,16 @@ module.exports = {
 		}
 
 		var obj;
-		fs.readFile(searchFile, 'utf8', function (err, data) {
+		fs.readFile(searchFile, 'utf8', async function (err, data) {
 			if (err) throw err;
 			obj = JSON.parse(data);
 			var result = obj.find((element) => {
-				if (element.label.includes("Tag")) return false;
 				return element.title.toLowerCase().startsWith(msg);
 			});
 
 			// Deeper searching
 			if (result == undefined) {
 				var result = obj.find((element) => {
-					if (element.label.includes("Tag")) return false;
 					return element.title.toLowerCase().includes(msg);
 				});
 			}
@@ -73,17 +71,40 @@ module.exports = {
 
 				let defaultURL = "https://gamemakerkitchen.com" + result.path;
 				let url = result.link ?? defaultURL;
+				let repoInfo = extractOwnerRepo(url);
+				let desc = result.description
+				let release = null;
+				let title = result.title;
+				if ('threadLink' in result) {
+					desc = `${desc}\n\nThread Link: ${result.threadLink}`
+				}
+				if ('docs' in result) {
+					if (result.docs.length > 0) {
+						desc = `${desc}\nDocs: ${result.docs}`;
+					}
+				}
+
+				if (repoInfo !== null) {
+					release = await getLatestGithubRelease(repoInfo.owner, repoInfo.repo);
+				}
+				
+				if (release !== null) {
+					desc += `\n### Download the latest release [here](${release.html_url})!`;
+				}
+
+				desc += `\n-# Available from ${url}.`;
+
 				const issuesEmbed = new EmbedBuilder()
 					.setColor(0x00CC00)
-					.setTitle(result.title + paid)
-					.setDescription(`Check out this resource ${result.title}!\nFetched from ${defaultURL}.`)
-					.setURL(url)
+					.setTitle(title + paid)
+					.setDescription(desc)
+					.setURL(defaultURL)
 					.setTimestamp();
 
 				if (result.logo != undefined) {
 					let img = result.logo;
 					if (img.startsWith("/site-assets/")) {
-						img = `https://gamemakerkitchen.com/${result.logo}`;
+						img = `https://gamemakerkitchen.com${result.logo}`;
 					}
 					issuesEmbed.setThumbnail(img);
 				}
