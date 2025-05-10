@@ -10,9 +10,14 @@ module.exports = {
 			.setName("role")
 			.setDescription("Role you wish to ping")
 			.setRequired(true)
-        }),
+        })
+		.addBooleanOption(performTestsOption => {
+			return performTestsOption
+			.setName("perform_tests")
+			.setDescription("Whether to perform a secret test. Default is false.")
+		}),
 	async execute(interaction) {
-		
+		let performTest = interaction.options.getBoolean("perform_tests")  ?? false;
 		// Make sure role/user exists
 		let results = await PingableRole.find({ GuildID: interaction.guild.id, RoleID: interaction.options.getRole("role").id });
 		if (results.length == 0) {
@@ -32,7 +37,7 @@ module.exports = {
         }
 
 		const modal = new ModalBuilder()
-			.setCustomId('pingRole')
+			.setCustomId(performTest ? 'pingRoleTest' : 'pingRole')
 			.setTitle('Ping role');
 
 		const roleInput = new TextInputBuilder()

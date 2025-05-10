@@ -14,10 +14,12 @@ async function handleModals(interaction) {
 	if (!interaction.isModalSubmit()) return;
 		
 	try {
+		let msg = "";
+		let role = undefined;
 		switch(interaction.customId) {
 			case "pingRole":
-				let msg = interaction.fields.getTextInputValue('msgInput');
-				let role = interaction.fields.getTextInputValue('roleInput');
+				msg = interaction.fields.getTextInputValue('msgInput');
+				role = interaction.fields.getTextInputValue('roleInput');
 
 				// Make sure role/user exists
 				let results = await PingableRole.find({ GuildID: interaction.guild.id, RoleID: role });
@@ -27,6 +29,13 @@ async function handleModals(interaction) {
 		
 				await interaction.channel.send(`<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`);
 				interaction.reply({content: `Successfully pinged!`, ephemeral: true});
+			break;
+
+			case "pingRoleTest":
+				msg = interaction.fields.getTextInputValue('msgInput');
+				role = interaction.fields.getTextInputValue('roleInput');
+				
+				await interaction.reply({content: `<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`, ephemeral: true});
 			break;
 		}
 	} catch (error) {
