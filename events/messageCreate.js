@@ -77,7 +77,7 @@ module.exports = {
                 return;
             }
             
-            await message.channel.send(response);
+            await message.reply({content: response, allowedMentions: {repliedUser: false}});
             return;
         }
     }
