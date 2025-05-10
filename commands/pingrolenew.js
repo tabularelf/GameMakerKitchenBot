@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionsBitField, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const PingableRole = require('../mongodb.js'); 
 
 module.exports = {
@@ -10,7 +10,6 @@ module.exports = {
 			.setName("role")
 			.setDescription("Role you wish to ping")
 			.setRequired(true)
-			.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         }),
 	async execute(interaction) {
 		
