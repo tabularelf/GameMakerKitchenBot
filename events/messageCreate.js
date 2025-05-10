@@ -22,7 +22,7 @@ module.exports = {
             await message.react(Emotes[emotePos]);
         } 
         
-        await handleLinkSummary(message);
+        await handleLinkSnippets(message);
     }
 }
 
@@ -60,7 +60,7 @@ async function handleLinkSnippets(message) {
         }
         
         // Handle the actual response
-        let response = "";
+        var response = "";
         for(resultMatch of results) {
             if (resultMatch == null) {
                 // Do nothing;
@@ -68,15 +68,24 @@ async function handleLinkSnippets(message) {
             }
             response += "```" + resultMatch.extension + `\n${resultMatch.toDisplay}\n` + "```\n";
         }
-        var length = response.length;
 
-        if (length > 2000) {
-            return await message.reply({content: `The associated link contents was too long. Got ${response.length}, expected 2000 or less.`, allowedMentions: {repliedUser: false}});
-        } if (length == 0) {
-            return;
+        if (response.length <= 2000) {
+            await message.reply({content: response, allowedMentions: {repliedUser: false}});
+        } else {
+            for(resultMatch of results) {
+                if (resultMatch == null) {
+                    // Do nothing;
+                    continue;
+                }
+                response = "```" + resultMatch.extension + `\n${resultMatch.toDisplay}\n` + "```\n";
+
+                if (response.length > 2000) {
+                 await message.reply({content: `Result too long: <${resultMatch.url}>`, allowedMentions: {repliedUser: false}});
+                } else {
+                    await message.reply({content: response, allowedMentions: {repliedUser: false}});
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
         }
-        
-        await message.reply({content: response, allowedMentions: {repliedUser: false}});
-        return;
     }
 }
