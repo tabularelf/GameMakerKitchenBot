@@ -25,12 +25,19 @@ if (goboExecutable != '') {
     console.log(`Selected gobo executable "${goboExecutable}"`);
 }
 
-module.exports = async function(message) {
+module.exports = async function(message, forceParse = false) {
     var codes = [];
-    for(let code of parseCodeBlocks(message.content, 'gml')) {
-        codes.push(code)
-    };
-
+    if (forceParse) {
+        codes.push({
+            code: message.content,
+            lang: 'gml'
+        });
+    } else {
+        for(let code of parseCodeBlocks(message.content, 'gml')) {
+            codes.push(code)
+        };
+    }
+    
     const results = await Promise.all(codes.map(code => new Promise(async resolve => {
         if (++fileIndex > 1000) fileIndex = 0;
 

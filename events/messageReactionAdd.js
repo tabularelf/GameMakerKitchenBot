@@ -32,6 +32,7 @@ module.exports = {
         }
 
         await handleWandReacts(reaction, user);
+        await handleWandForceReacts(reaction, user);
     }
 };
 
@@ -39,4 +40,14 @@ async function handleWandReacts(reaction, user) {
     if (reaction.emoji.name !== '🪄') return;
     const message = await reaction.message.fetch();
     await handleGMLCodeBlock(message);
+}
+
+async function handleWandForceReacts(reaction, user) {
+    if (reaction.emoji.name !== '🪄' && reaction.emoji.name !== '🇫') return;
+    const message = await reaction.message.fetch();
+    const filter = (reaction) => {return reaction === '🪄' || reaction === '🇫'};
+    const reactions = [...message.reactions.cache.keys()].filter(filter);
+    if (reactions.length === 2) {
+        await handleGMLCodeBlock(message, true);
+    }
 }
