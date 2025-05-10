@@ -1,5 +1,6 @@
 const fetch = require('node-fetch'); 
 const http = require('http');
+const fs = require('node:fs');
 const download = async function (url, dest, cb) {
 	var file = fs.createWriteStream(dest);
 	var request = http.get(url, function (response) {
