@@ -11,7 +11,6 @@ mongoose.connect(mongoDBAddress).then(console.log('Connected to Mongodb.'));
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-projectRootPath = __dirname;
 
 const client = new Client({ intents: [
 	GatewayIntentBits.Guilds,
@@ -57,9 +56,9 @@ client.login(token);
 
 const AutoDownloadSearchJSON = async function() {
 	const folderName = "./.temp/";
-	const searchFile = `${folderName}search.json`;
-	await download("http://www.gamemakerkitchen.com/search.json", searchFile, function(){
-		console.log("search.json downloaded!");
+	const searchFile = `${folderName}resource.json`;
+	await download("http://www.gamemakerkitchen.com/resource.json", searchFile, function(){
+		console.log("resource.json downloaded!");
 	});
 }
 

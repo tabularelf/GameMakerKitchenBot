@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const folderName = "./.temp/";
-const searchFile = `${folderName}search.json`;
+const searchFile = `${folderName}resource.json`;
 const fs = require('fs');
 
 
@@ -71,7 +71,7 @@ module.exports = {
 					paid = "💰";
 				}
 
-				let defaultURL = "https://gamemakerkitchen.com" + result.value;
+				let defaultURL = "https://gamemakerkitchen.com" + result.path;
 				let url = result.link ?? defaultURL;
 				const issuesEmbed = new EmbedBuilder()
 					.setColor(0x00CC00)
@@ -83,7 +83,7 @@ module.exports = {
 				if (result.logo != undefined) {
 					let img = result.logo;
 					if (img.startsWith("/site-assets/")) {
-						img = `https://gamemakerkitche.com/${result.logo}`;
+						img = `https://gamemakerkitchen.com/${result.logo}`;
 					}
 					issuesEmbed.setThumbnail(img);
 				}
