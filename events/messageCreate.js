@@ -26,7 +26,7 @@ module.exports = {
     }
 }
 
-async function handleLinkSummary(message) {
+async function handleLinkSnippets(message) {
     var msg = message.content;
     const githubMatch = [...msg.matchAll(
         /https?:\/\/github\.com\/([a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(.+?)\/(.+?)#L(\d+)[-~]?L?(\d*)/g
