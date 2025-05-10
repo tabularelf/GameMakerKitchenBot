@@ -1,4 +1,5 @@
 const { Events } = require('discord.js');
+const PingableRole = require('../mongodb.js'); 
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -17,6 +18,24 @@ async function handleModals(interaction) {
 			case "pingRole":
 				let msg = interaction.fields.getTextInputValue('msgInput');
 				let role = interaction.fields.getTextInputValue('roleInput');
+
+				// Make sure role/user exists
+				let results = await PingableRole.find({ GuildID: interaction.guild.id, RoleID: role.id });
+				if (results.length == 0) {
+					return await interaction.reply({content: "Role doesn't exist in database!", ephemeral: true});
+				}
+		
+				let found = false;
+				for(element of results) {
+					if (element.UserID == interaction.user.id) {
+						found = true;
+						break;
+					}
+				}
+		
+				if (!found) {
+					return await interaction.reply({content: "Invalid permission to ping role!", ephemeral: true});
+				}
 				await interaction.channel.send(`${role} ${msg}`);
 				interaction.reply({content: `Successfully pinged!`, ephemeral: true});
 			break;
