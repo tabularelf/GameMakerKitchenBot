@@ -2,7 +2,7 @@
 // General Setup
 const { token, mongoDBAddress } = require('./config.json');
 const schedule = require('node-schedule');
-const { AutoDownloadSearchJSON } = require('./src/utitiles.js');
+const { AutoDownloadSearchJSON } = require('./src/utilities.js');
 
 // MongoDB setup
 const mongoose = require('mongoose');
