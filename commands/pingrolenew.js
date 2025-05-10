@@ -38,7 +38,7 @@ module.exports = {
 		const roleInput = new TextInputBuilder()
 			.setCustomId('roleInput')
 			.setLabel("Role to ping (DO NOT MODIFY THIS PLEASE)")
-			.setValue(`${interaction.options.getRole("role")}`)
+			.setValue(`${interaction.options.getRole("role").id}`)
 			.setMaxLength(50)
 			.setStyle(TextInputStyle.Short);	
 
