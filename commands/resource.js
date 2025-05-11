@@ -103,9 +103,7 @@ module.exports = {
 					.setTitle(title + paid)
 					.setAuthor({ name: `${result.author[0]}`, url: `https://gamemakerkitchen.com/authors/${result.author[0].replaceAll(' ', '-').replaceAll('_', '-')}` })
 					.setDescription(desc)
-					.setURL(defaultURL)
-					.setFooter({text: "Entry submitted"})
-					.setTimestamp(new Date(date).getTime());
+					.setURL(defaultURL);
 
 				if (result.logo != undefined) {
 					let img = result.logo;
