@@ -26,9 +26,9 @@ module.exports = {
 		for(key in obj) {
 			var element = obj[key];
 			if (element.label.includes('Tag') === false) {
-				if (element.label.toLowerCase().startsWith(focusedValue) || 
-					element.title.toLowerCase().startsWith(focusedValue) ||
-					String(element.author).toLowerCase().includes(focusedValue)) {
+				if (`${element.label} - ${element.author.join(', ')}`.toLowerCase().startsWith(focusedValue) || 
+					`${element.title} - ${element.author.join(', ')}`.toLowerCase().startsWith(focusedValue) ||
+					String(element.author.join(', ')).toLowerCase().includes(focusedValue)) {
 					output.push({name: `${element.label} - ${element.author.join(', ')}`, value: element.title});
 					if (++count > 24) break;
 				} 
