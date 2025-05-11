@@ -17,7 +17,6 @@ module.exports = {
 		}),
 	async autocomplete(interaction) {
 		const focusedValue  = interaction.options.getFocused().toLowerCase();
-		console.log(focusedValue);
 
 
 		const output = [];
@@ -27,9 +26,11 @@ module.exports = {
 		for(key in obj) {
 			var element = obj[key];
 			if (element.label.includes('Tag') === false) {
-				if (element.title.toLowerCase().startsWith(focusedValue) || element.title.toLowerCase().includes(focusedValue)) {
-					output.push({name: element.label, value: element.title});
-					if (++count > 5) break;
+				if (element.label.toLowerCase().startsWith(focusedValue) || 
+					element.title.toLowerCase().startsWith(focusedValue) ||
+					String(element.author).toLowerCase().includes(focusedValue)) {
+					output.push({name: `${element.label} - ${element.author.join(', ')}`, value: element.title});
+					if (++count > 24) break;
 				} 
 			}
 		}
@@ -75,8 +76,11 @@ module.exports = {
 				let desc = result.description
 				let release = null;
 				let title = result.title;
+				let date = result.date;
 				if ('threadLink' in result) {
 					desc = `${desc}\n\nThread Link: ${result.threadLink}`
+				} else if ('supportLink' in result) {
+					desc = `${desc}\n\Support Link: ${result.supportLink}`
 				}
 				if ('docs' in result) {
 					if (result.docs.length > 0) {
@@ -93,13 +97,15 @@ module.exports = {
 				}
 
 				desc += `\n-# Available from ${url}.`;
-
+				
 				const issuesEmbed = new EmbedBuilder()
 					.setColor(0x00CC00)
 					.setTitle(title + paid)
+					.setAuthor({ name: `${result.author[0]}`, url: `https://gamemakerkitchen.com/authors/${result.author[0]}` })
 					.setDescription(desc)
 					.setURL(defaultURL)
-					.setTimestamp();
+					.setFooter({text: "Entry submitted"})
+					.setTimestamp(new Date(date).getTime());
 
 				if (result.logo != undefined) {
 					let img = result.logo;
