@@ -3,7 +3,7 @@ const { AutoDownloadSearchJSON } = require('../src/utilities.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('resource_resfresh')
+		.setName('resource_refresh')
 		.setDescription('Refreshes the resource.json file.'),
 	async execute(interaction) {
 		await AutoDownloadSearchJSON();
