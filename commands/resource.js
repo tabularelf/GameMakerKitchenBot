@@ -80,7 +80,7 @@ module.exports = {
 				if ('threadLink' in result) {
 					desc = `${desc}\n\nThread Link: ${result.threadLink}`
 				} else if ('supportLink' in result) {
-					desc = `${desc}\n\Support Link: ${result.supportLink}`
+					desc = `${desc}\nSupport Link: ${result.supportLink}`
 				}
 				if ('docs' in result) {
 					if (result.docs.length > 0) {
@@ -101,7 +101,7 @@ module.exports = {
 				const issuesEmbed = new EmbedBuilder()
 					.setColor(0x00CC00)
 					.setTitle(title + paid)
-					.setAuthor({ name: `${result.author[0]}`, url: `https://gamemakerkitchen.com/authors/${result.author[0]}` })
+					.setAuthor({ name: `${result.author[0]}`, url: `https://gamemakerkitchen.com/authors/${result.author[0].replaceAll(' ', '-').replaceAll('_', '-')}` })
 					.setDescription(desc)
 					.setURL(defaultURL)
 					.setFooter({text: "Entry submitted"})
