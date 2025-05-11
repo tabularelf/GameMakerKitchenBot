@@ -228,7 +228,7 @@ const CreatePR = async function(data, type, content) {
         owner: owner,
         repo: repoName,
         path: path,
-        message: `Automation: file ${data.title}.md added`,
+        message: `Submission Automated.`,
         content: Base64.encode(content),
         sha: sha,
         'committer.name': 'GameMakerKitchen-Bot',

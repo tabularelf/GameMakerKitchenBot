@@ -14,8 +14,8 @@ module.exports = {
 		})
 		.addStringOption(option => {
 			return option
-			.setName("description")
-			.setDescription("The description the assoicated resource has")
+			.setName("short_description")
+			.setDescription("A short description of the assoicated resource.")
 			.setRequired(true)
 		})
 		.addStringOption(option => {
@@ -27,7 +27,7 @@ module.exports = {
 		.addStringOption(option => {
 			return option
 			.setName("authors")
-			.setDescription("The authors assoicated resource has")
+			.setDescription("The authors assoicated resource has, separated by comma each")
 			.setRequired(true)
 		})
 		.addChannelOption(option => {
@@ -62,7 +62,7 @@ module.exports = {
 	async execute(interaction) {
 		const thread = interaction.options.getChannel("thread") ?? interaction.channel;
 		const link = interaction.options.getString("link");
-		const description = interaction.options.getString("description");
+		const description = interaction.options.getString("short_description");
 		const tags = interaction.options.getString("tags");
 		const authors = interaction.options.getString("authors");
 		const type = interaction.options.getString("type");
@@ -101,30 +101,33 @@ module.exports = {
 		}
 		
 		
-		
-		await thread.messages.fetch(true).then(messages => {
-			result = GeneratePageFromCommand({
-				thread: thread,
-				title: title,
-				link: link,
-				docs: docs,
-				firstMessage: messages.last(),
-				tags: tags,
-				description: description,
-				authors: authors,
-				type: typeExt,
-				paid: paid ?? paidTag
+		try {
+			await thread.messages.fetch(true).then(messages => {
+				result = GeneratePageFromCommand({
+					thread: thread,
+					title: title,
+					link: link,
+					docs: docs,
+					firstMessage: messages.last(),
+					tags: tags,
+					description: description,
+					authors: authors,
+					type: typeExt,
+					paid: paid ?? paidTag
+				});
 			});
-		});
 
-		console.log("I have the PR!");
-		const resultEmbed = new EmbedBuilder()
-			.setColor(0x00CC00)
-			.setTitle(`Submission: ${title}`)
-			.setDescription(`Submission made to GameMaker Kitchen Website repo!\nPlease check the PR section!`)
-			.setURL('https://github.com/tabularelf/gamemaker-kitchen/pulls')
-			.setTimestamp();
-		
-		await interaction.followUp({ embeds: [resultEmbed], fetchReply: true});
+			console.log("I have the PR!");
+			const resultEmbed = new EmbedBuilder()
+				.setColor(0x00CC00)
+				.setTitle(`Submission Automated.`)
+				.setDescription(`Submission made to GameMaker Kitchen Website repo!\nPlease check the PR section!\n-# Note: Additional PRs may lump it as under one subsmission`)
+				.setURL('https://github.com/tabularelf/gamemaker-kitchen/pulls')
+				.setTimestamp();
+
+			await interaction.followUp({ embeds: [resultEmbed], fetchReply: true});
+		} catch(err) {
+			return interaction.followUp({ content: `An error occurred while processing this request! Please let @tabularelf know!\nCommand Parameters (whether filled or not)\nThread: ${thread}\nLink: ${link}\nDesc: ${description}\nTags: ${tags}\nAuthors: ${authors}\nType: ${typeExt}\nDocs: ${docs}\nPaid: ${paid}\nTitle: ${title}`});
+		}
 	},
 };
