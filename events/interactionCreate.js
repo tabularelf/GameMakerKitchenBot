@@ -1,6 +1,5 @@
 const { ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Events } = require('discord.js');
 const PingableRole = require('../mongodb.js'); 
-const { sleep } = require('../src/utilities.js');
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -50,14 +49,6 @@ async function handleModals(interaction) {
 				
 				const collectorFilter = i => i.user.id === interaction.user.id;
 				const confirmation =  response.resource.message.createMessageComponentCollector({ filter: collectorFilter, time: 900_000 });
-				const timeout = sleep(895_000, (confirmation, row) => {
-					if (response.replied || response.deferred) return;
-					confirm.setDisabled(true);
-					edit.setDisabled(true);
-					cancel.setDisabled(true);
-					confirmation.editReply({content: `${msg}`,components: [row]});
-					confirmation.followUp({content: `No response. Timed out!`, ephemeral: true});
-				}, interaction, row);
 				confirmation.on('collect', async confirmation => {
 					try {
 						if (confirmation.customId === 'confirm') {
@@ -85,9 +76,11 @@ async function handleModals(interaction) {
 							const roleRow = new ActionRowBuilder().addComponents(roleInput);
 							const msgRow = new ActionRowBuilder().addComponents(msgInput);
 							modal.addComponents(msgRow, roleRow);
+							confirm.setDisabled(true);
+							edit.setDisabled(true);
+							cancel.setDisabled(true);
 							await confirmation.showModal(modal);
 						}
-						console.log(confirmation.customId);
 					} catch(error) {
 						if (interaction.replied || interaction.deferred) {
 							await interaction.followUp({ content: 'The interaction was cancelled or an error occurred!', ephemeral: true });
