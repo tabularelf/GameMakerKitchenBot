@@ -87,6 +87,7 @@ async function handleModals(interaction) {
 						} else {
 							await interaction.reply({ content: 'The interaction was cancelled or an error occurred', ephemeral: true });
 						}
+						console.log(error);
 					}
 				})
 			break;
