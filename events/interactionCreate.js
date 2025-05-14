@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Events } = require('discord.js');
 const PingableRole = require('../mongodb.js'); 
 
 module.exports = {
@@ -14,8 +14,8 @@ async function handleModals(interaction) {
 	if (!interaction.isModalSubmit()) return;
 		
 	try {
-		let msg = "";
-		let role = undefined;
+		var msg = "";
+		var role = undefined;
 		switch(interaction.customId) {
 			case "pingRole":
 				msg = interaction.fields.getTextInputValue('msgInput');
@@ -26,24 +26,66 @@ async function handleModals(interaction) {
 				if (results.length == 0) {
 					return await interaction.reply({content: "Role doesn't exist in database!", ephemeral: true});
 				}
-		
-				await interaction.channel.send(`<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`);
-				interaction.reply({content: `Successfully pinged!`, ephemeral: true});
-			break;
 
-			case "pingRoleTest":
-				msg = interaction.fields.getTextInputValue('msgInput');
-				role = interaction.fields.getTextInputValue('roleInput');
+				const confirm = new ButtonBuilder()
+					.setCustomId('confirm')
+					.setLabel('Publish')
+					.setStyle(ButtonStyle.Success);
+
+				const edit = new ButtonBuilder()
+					.setCustomId('edit')
+					.setLabel('Edit')
+					.setStyle(ButtonStyle.Primary);
+
+				const cancel = new ButtonBuilder()
+					.setCustomId('cancel')
+					.setLabel('Cancel')
+					.setStyle(ButtonStyle.Secondary);
+
+				const row = new ActionRowBuilder()
+					.addComponents(confirm, edit, cancel);
+		
+				const response = await interaction.reply({content: `<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`, ephemeral: true, components: [row], withResponse: true});
 				
-				await interaction.reply({content: `<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`, ephemeral: true});
+				const collectorFilter = i => i.user.id === interaction.user.id;
+				const confirmation =  response.resource.message.createMessageComponentCollector({ filter: collectorFilter, time: 3_600_000 });
+				confirmation.on('collect', async confirmation => {
+					if (confirmation.customId === 'confirm') {
+						await interaction.channel.send(`<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`);
+						await confirmation.update({ content: `<@&${role}> has been successfully submitted!`, components: [] });
+					} else if (confirmation.customId === 'cancel') {
+						await confirmation.update({ content: 'Ping role cancelled.', components: [] });
+					} else if (confirmation.customId === 'edit') {
+						const modal = new ModalBuilder()
+							.setCustomId('pingRole')
+							.setTitle(`Ping role`);
+						const roleInput = new TextInputBuilder()
+							.setCustomId('roleInput')
+							.setLabel("Role to ping (DO NOT MODIFY THIS PLEASE)")
+							.setValue(role)
+							.setMaxLength(50)
+							.setStyle(TextInputStyle.Short);	
+						const msgInput = new TextInputBuilder()
+							.setCustomId('msgInput')
+							.setLabel("Message to send")
+							.setValue(msg)
+							.setMaxLength(1_950)
+							.setMinLength(5)
+							.setStyle(TextInputStyle.Paragraph);	
+						const roleRow = new ActionRowBuilder().addComponents(roleInput);
+						const msgRow = new ActionRowBuilder().addComponents(msgInput);
+						modal.addComponents(msgRow, roleRow);
+						await confirmation.showModal(modal);
+					}
+				});
 			break;
 		}
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this submission!', ephemeral: true });
+			await interaction.followUp({ content: 'There was an error while executing this modal!', ephemeral: true });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this submission!', ephemeral: true });
+			await interaction.reply({ content: 'There was an error while executing this modal!', ephemeral: true });
 		}
 	}
 }
