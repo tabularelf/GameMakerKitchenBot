@@ -1,5 +1,6 @@
 const { ButtonBuilder, ButtonStyle, SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Events } = require('discord.js');
 const PingableRole = require('../mongodb.js'); 
+const { sleep } = require('../src/utilities.js');
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -48,36 +49,53 @@ async function handleModals(interaction) {
 				const response = await interaction.reply({content: `<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`, ephemeral: true, components: [row], withResponse: true});
 				
 				const collectorFilter = i => i.user.id === interaction.user.id;
-				const confirmation =  response.resource.message.createMessageComponentCollector({ filter: collectorFilter, time: 3_600_000 });
+				const confirmation =  response.resource.message.createMessageComponentCollector({ filter: collectorFilter, time: 900_000 });
+				const timeout = sleep(895_000, (confirmation, row) => {
+					if (response.replied || response.deferred) return;
+					confirm.setDisabled(true);
+					edit.setDisabled(true);
+					cancel.setDisabled(true);
+					confirmation.editReply({content: `${msg}`,components: [row]});
+					confirmation.followUp({content: `No response. Timed out!`, ephemeral: true});
+				}, interaction, row);
 				confirmation.on('collect', async confirmation => {
-					if (confirmation.customId === 'confirm') {
-						await interaction.channel.send(`<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`);
-						await confirmation.update({ content: `<@&${role}> has been successfully submitted!`, components: [] });
-					} else if (confirmation.customId === 'cancel') {
-						await confirmation.update({ content: 'Ping role cancelled.', components: [] });
-					} else if (confirmation.customId === 'edit') {
-						const modal = new ModalBuilder()
-							.setCustomId('pingRole')
-							.setTitle(`Ping role`);
-						const roleInput = new TextInputBuilder()
-							.setCustomId('roleInput')
-							.setLabel("Role to ping (DO NOT MODIFY THIS PLEASE)")
-							.setValue(role)
-							.setMaxLength(50)
-							.setStyle(TextInputStyle.Short);	
-						const msgInput = new TextInputBuilder()
-							.setCustomId('msgInput')
-							.setLabel("Message to send")
-							.setValue(msg)
-							.setMaxLength(1_950)
-							.setMinLength(5)
-							.setStyle(TextInputStyle.Paragraph);	
-						const roleRow = new ActionRowBuilder().addComponents(roleInput);
-						const msgRow = new ActionRowBuilder().addComponents(msgInput);
-						modal.addComponents(msgRow, roleRow);
-						await confirmation.showModal(modal);
+					try {
+						if (confirmation.customId === 'confirm') {
+							await interaction.channel.send(`<@&${role}> ${msg.replaceAll('@everyone', '').replaceAll('@here', '')}`);
+							await confirmation.update({ content: `<@&${role}> has been successfully submitted!`, components: [] });
+						} else if (confirmation.customId === 'cancel') {
+							await confirmation.update({ content: 'Ping role cancelled.', components: [] });
+						} else if (confirmation.customId === 'edit') {
+							const modal = new ModalBuilder()
+								.setCustomId('pingRole')
+								.setTitle(`Ping role`);
+							const roleInput = new TextInputBuilder()
+								.setCustomId('roleInput')
+								.setLabel("Role to ping (DO NOT MODIFY THIS PLEASE)")
+								.setValue(role)
+								.setMaxLength(50)
+								.setStyle(TextInputStyle.Short);	
+							const msgInput = new TextInputBuilder()
+								.setCustomId('msgInput')
+								.setLabel("Message to send")
+								.setValue(msg)
+								.setMaxLength(1_950)
+								.setMinLength(5)
+								.setStyle(TextInputStyle.Paragraph);	
+							const roleRow = new ActionRowBuilder().addComponents(roleInput);
+							const msgRow = new ActionRowBuilder().addComponents(msgInput);
+							modal.addComponents(msgRow, roleRow);
+							await confirmation.showModal(modal);
+						}
+						console.log(confirmation.customId);
+					} catch(error) {
+						if (interaction.replied || interaction.deferred) {
+							await interaction.followUp({ content: 'The interaction was cancelled or an error occurred!', ephemeral: true });
+						} else {
+							await interaction.reply({ content: 'The interaction was cancelled or an error occurred', ephemeral: true });
+						}
 					}
-				});
+				})
 			break;
 		}
 	} catch (error) {
@@ -89,6 +107,7 @@ async function handleModals(interaction) {
 		}
 	}
 }
+
 
 async function handleCommands(interaction) {
 	if (interaction.isChatInputCommand()) {

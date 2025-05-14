@@ -15,6 +15,10 @@ const download = async function (url, dest, cb) {
 };
 
 module.exports = {
+    sleep: async function(ms, fn, ...args) {
+      await new Promise(resolve => setTimeout(resolve, ms));
+      return fn(...args);
+    },
     AutoDownloadSearchJSON: async function() {
         const folderName = "./.temp/";
         const searchFile = `${folderName}resource.json`;
