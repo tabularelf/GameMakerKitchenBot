@@ -29,6 +29,6 @@ module.exports = {
 		}
 		
 		reload(interaction.client, interaction.options.getBoolean("global") ?? false);
-		interaction.reply('Bot reloaded!');
+		interaction.reply({content: 'Bot reloaded!', ephmeeral: true});
 	},
 };
