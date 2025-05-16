@@ -3,6 +3,7 @@ const { GeneratePageFromCommand } = require('../generatepage.js');
 const DESTINATED_CHANNEL = '1047095400278020136';
 
 module.exports = {
+	private: true,
 	data: new SlashCommandBuilder()
 		.setName('generate-resource-page')
 		.setDescription('Generate a page resource')
