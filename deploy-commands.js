@@ -27,6 +27,10 @@ module.exports = function(client, global = false) {
 		rest.put(Routes.applicationCommands(clientID), { body: commands })
 			.then(() => console.log(`Successfully registered application commands for all guilds.`))
 			.catch(console.error);
+
+		rest.put(Routes.applicationGuildCommands(clientID, guildID), { body: commandsPrivate })
+			.then(() => console.log('Successfully registered application commands.'))
+			.catch(console.error);
 	} else {
 		rest.put(Routes.applicationGuildCommands(clientID, guildID), { body: commandsPrivate })
 			.then(() => console.log('Successfully registered application commands.'))
