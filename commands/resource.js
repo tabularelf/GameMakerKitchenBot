@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ApplicationIntegrationType } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ApplicationIntegrationType, InteractionContextType } = require('discord.js');
 const folderName = "./.temp/";
 const searchFile = `${folderName}resource.json`;
 const fs = require('fs');
@@ -14,7 +14,16 @@ module.exports = {
 				.setDescription("The resource you'd like to recommend")
 				.setRequired(true)
 				.setAutocomplete(true)
-		}),
+		})
+		.setIntegrationTypes([
+        	ApplicationIntegrationType.GuildInstall, // Allows installation to servers (value: 0)
+        	ApplicationIntegrationType.UserInstall   // Allows installation by users to their account (value: 1)
+    	])
+    	.setContexts([
+    	    InteractionContextType.Guild,           // Usable in servers (value: 0)
+    	    InteractionContextType.BotDM,           // Usable in DMs with the bot (value: 1)
+    	    InteractionContextType.PrivateChannel   // Usable in Group DMs & other DMs if user-installed (value: 2)
+    	]),
 	async autocomplete(interaction) {
 		const focusedValue  = interaction.options.getFocused().toLowerCase();
 
