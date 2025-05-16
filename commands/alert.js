@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
+	private: true,
 	cooldown: 60,
 	data: new SlashCommandBuilder()
 		.setName('alert')
