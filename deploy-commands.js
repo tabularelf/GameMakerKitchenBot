@@ -20,11 +20,9 @@ module.exports = function(client, global = false) {
 	const rest = new REST({ version: '10' }).setToken(token);
 
 	if (global) {
-		for(element in Guilds) {
-		rest.put(Routes.applicationGuildCommands(clientID, Guilds[element]), { body: commands })
-			.then(() => console.log(`Successfully registered application commands for guild ${Guilds[element]}.`))
+		rest.put(Routes.applicationCommands(clientID), { body: commands })
+			.then(() => console.log(`Successfully registered application commands for all guilds.`))
 			.catch(console.error);
-		}
 	} else {
 		rest.put(Routes.applicationGuildCommands(clientID, guildID), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
