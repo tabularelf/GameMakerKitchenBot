@@ -3,6 +3,8 @@ const { Octokit } = require("@octokit/rest");
 const { githubToken } = require('../config.json');
 
 module.exports = {
+	"integration_types": [0, 1],
+	"contexts": [0, 1, 2],
 	data: new SlashCommandBuilder()
 		.setName('milestone-count')
 		.setDescription('Gets the GameMaker Bugs repository issues, by milestone!')

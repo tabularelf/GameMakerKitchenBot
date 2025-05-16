@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
+	private: true,
 	data: new SlashCommandBuilder()
 		.setName('backticks')
 		.setDescription('Demonstrate how to format code with backticks!'),
