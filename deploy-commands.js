@@ -15,7 +15,7 @@ module.exports = function(client, global = false) {
 		const filePath = path.join(commandsPath, file);
 		fs.watchFile(require("path").resolve(filePath), () => { delete require.cache[require.resolve(filePath)] });
 		const command = require(filePath);
-		if ((command.private ?? false) === true) {
+		if ((command.private ?? false) === false) {
 			commands.push(command.data.toJSON());
 		}
 		commandsPrivate.push(command.data.toJSON());
