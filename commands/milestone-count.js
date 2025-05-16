@@ -1,10 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ApplicationIntegrationType } = require('discord.js');
 const { Octokit } = require("@octokit/rest");
 const { githubToken } = require('../config.json');
 
 module.exports = {
-	"integration_types": [0, 1],
-	"contexts": [0, 1, 2],
 	data: new SlashCommandBuilder()
 		.setName('milestone-count')
 		.setDescription('Gets the GameMaker Bugs repository issues, by milestone!')
@@ -13,7 +11,16 @@ module.exports = {
 			.setName("milestone")
 			.setDescription("The milestone to get")
 			.setRequired(false)
-		}),
+		})
+		.setIntegrationTypes([
+        	ApplicationIntegrationType.GuildInstall, // Allows installation to servers (value: 0)
+        	ApplicationIntegrationType.UserInstall   // Allows installation by users to their account (value: 1)
+    	])
+    	.setContexts([
+    	    InteractionContextType.Guild,           // Usable in servers (value: 0)
+    	    InteractionContextType.BotDM,           // Usable in DMs with the bot (value: 1)
+    	    InteractionContextType.PrivateChannel   // Usable in Group DMs & other DMs if user-installed (value: 2)
+    	]),
 	async execute(interaction) {
 		var msg = interaction.options.getString("milestone") ?? "current";
 

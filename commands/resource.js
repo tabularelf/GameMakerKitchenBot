@@ -1,12 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ApplicationIntegrationType } = require('discord.js');
 const folderName = "./.temp/";
 const searchFile = `${folderName}resource.json`;
 const fs = require('fs');
 const { extractOwnerRepo, getLatestGithubRelease } = require('../src/utilities.js');
 
 module.exports = {
-	"integration_types": [0, 1],
-	"contexts": [0, 1, 2],
 	data: new SlashCommandBuilder()
 		.setName('resource')
 		.setDescription('Links a resource, if it exists.')
