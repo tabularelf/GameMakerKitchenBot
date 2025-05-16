@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,12 +16,15 @@ module.exports = {
                     .setDescription('General contribution notice')
         ),
 	async execute(interaction) {
-        var msg = "";
+        var msg = ""
+        var files = [];
         if (interaction.options.getSubcommand() === 'input') {
-            msg = "Please contribute your edits or suggestions directly using GitHub: <https://github.com/offalynne/Input/tree/docs/docs>\n[img](https://raw.githubusercontent.com/tabularelf/gamemaker-kitchen/cd03b770d1b5b25ee18c8de53fdee791289da448/src/site-assets/img/bot_data/contribution.png)";
+           msg = "Please contribute your edits or suggestions directly using GitHub: <https://github.com/offalynne/Input/tree/docs/docs>";
+           files.push(new AttachmentBuilder('./assets/contribution.png', {name: 'contribution.png'}));
         } else {
             msg = "Please follow along with the contribution guidelines of the specified resource. If none are specified, please ask the author for the contribution guidelines.";
         }
-		return interaction.reply({content: `${msg}`, ephemeral: false});
+		
+        return interaction.reply({content: msg, files});
 	},
 };
