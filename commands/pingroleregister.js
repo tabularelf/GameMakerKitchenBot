@@ -2,6 +2,7 @@ const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 const PingableRole = require('../mongodb.js'); 
 
 module.exports = {
+    private: true,
 	data: new SlashCommandBuilder()
 		.setName('pingroleregister')
 		.setDescription('Registers a role and user to the database')

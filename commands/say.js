@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
+	private: true,
 	data: new SlashCommandBuilder()
 		.setName('say')
 		.setDescription('Say whatever you want!')

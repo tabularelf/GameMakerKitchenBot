@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const PingableRole = require('../mongodb.js'); 
 
 module.exports = {
+	private: true,
 	data: new SlashCommandBuilder()
 		.setName('pingrole')
 		.setDescription('Pings the specified role, with an optional message')

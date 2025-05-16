@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, T
 const PingableRole = require('../mongodb.js'); 
 
 module.exports = {
+	private: true,
 	data: new SlashCommandBuilder()
 		.setName('pingrolenew')
 		.setDescription('Pings the specified role, with an optional message')

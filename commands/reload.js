@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
+	private: true,
 	data: new SlashCommandBuilder()
 		.setName('reload')
 		.setDescription('Reloads the bot')
