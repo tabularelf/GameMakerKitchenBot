@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 
 module.exports = {
+    private: true,
 	data: new SlashCommandBuilder()
 		.setName('contribution')
 		.setDescription('Print out troubleshooting steps')
