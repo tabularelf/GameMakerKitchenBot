@@ -15,7 +15,7 @@ module.exports = {
                     .setName('general')
                     .setDescription('General contribution notice')
         ),
-	async execute(interaction) {
+    async execute(interaction) {
         var msg = ""
         var files = [];
         if (interaction.options.getSubcommand() === 'input') {
