@@ -34,14 +34,13 @@ module.exports = {
 		let count = 0;
 		for(key in obj) {
 			var element = obj[key];
-			if (element.label.includes('Tag') === false) {
-				if (`${element.label} - ${element.author.join(', ')}`.toLowerCase().startsWith(focusedValue) || 
-					`${element.title} - ${element.author.join(', ')}`.toLowerCase().startsWith(focusedValue) ||
-					String(element.author.join(', ')).toLowerCase().includes(focusedValue)) {
-					output.push({name: `${element.label} - ${element.author.join(', ')}`, value: element.title});
-					if (++count > 24) break;
-				} 
-			}
+			if (`${element.label} - ${element.author.join(' ')}`.toLowerCase().startsWith(focusedValue) || 
+				`${element.title} - ${element.author.join(' ')}`.toLowerCase().startsWith(focusedValue) ||
+				element.authorSafe.some(entry => focusedValue.split(" ").some(entry)) ||
+				element.tags.some(entry => focusedValue.split(' ').some(entry))) {
+				output.push({name: `${element.label} - ${element.author.join(', ')}`, value: element.title});
+				if (++count > 24) break;
+			} 
 		}
 		await interaction.respond(output);
 	},
@@ -110,7 +109,7 @@ module.exports = {
 				const issuesEmbed = new EmbedBuilder()
 					.setColor(0x00CC00)
 					.setTitle(title + paid)
-					.setAuthor({ name: `${result.author[0]}`, url: `https://gamemakerkitchen.com/authors/${result.author[0].replaceAll(' ', '-').replaceAll('_', '-')}` })
+					.setAuthor({ name: `${result.author[0]}`, url: `https://gamemakerkitchen.com/authors/${result.authorsSafe[0].replaceAll(' ', '-').replaceAll('_', '-')}` })
 					.setDescription(desc)
 					.setURL(defaultURL);
 

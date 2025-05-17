@@ -169,7 +169,7 @@ module.exports = {
             if (authorInfo == undefined) {
                 continue;
             }
-            newAuthors.push(authorInfo.username.replaceAll(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, ''));
+            newAuthors.push(authorInfo.username);
         }
         authors = newAuthors;
 
