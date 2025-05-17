@@ -36,8 +36,8 @@ module.exports = {
 			var element = obj[key];
 			if (`${element.label} - ${element.author.join(' ')}`.toLowerCase().startsWith(focusedValue) || 
 				`${element.title} - ${element.author.join(' ')}`.toLowerCase().startsWith(focusedValue) ||
-				element.authorSafe.some(entry => focusedValue.split(" ").some(entry)) ||
-				element.tags.some(entry => focusedValue.split(' ').some(entry))) {
+				element.authorsSafe.includes(focusedValue) ||
+				element.tags.includes(focusedValue)) {
 				output.push({name: `${element.label} - ${element.author.join(', ')}`, value: element.title});
 				if (++count > 24) break;
 			} 
