@@ -11,6 +11,7 @@ module.exports = {
 			.setName("milestone")
 			.setDescription("The milestone to get")
 			.setRequired(false)
+			.setAutocomplete(true)
 		})
 		.setIntegrationTypes([
         	ApplicationIntegrationType.GuildInstall, // Allows installation to servers (value: 0)
@@ -21,6 +22,27 @@ module.exports = {
     	    InteractionContextType.BotDM,           // Usable in DMs with the bot (value: 1)
     	    InteractionContextType.PrivateChannel   // Usable in Group DMs & other DMs if user-installed (value: 2)
     	]),
+	async autocomplete(interaction) {
+			const focusedValue  = interaction.options.getFocused();
+	
+	
+			const output = [];
+			const octokit = new Octokit({ auth: githubToken });
+			let count = 0;
+   			const issues = await octokit.issues.listMilestones({
+      			owner: 'yoyogames',
+     			 repo: 'gamemaker-bugs',
+    		});
+			for(key in issues.data) {
+				var element = issues.data[key];
+				//console.log(`${JSON.stringify(element)} - ${key}`)
+				if (element.title.startsWith(focusedValue)) {
+					output.push({name: element.title, value: element.title});
+					if (++count > 9) break;
+				} 
+			}
+			await interaction.respond(output);
+		},
 	async execute(interaction) {
 		var msg = interaction.options.getString("milestone") ?? "current";
 
