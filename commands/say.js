@@ -14,7 +14,7 @@ module.exports = {
 	async execute(interaction) {
 		let msg = interaction.options.getString("message") ?? "";
 		await interaction.channel.send(`${msg}`);
-		interaction.deferReply();
-		interaction.deleteReply();
+		await interaction.deferReply();
+		await interaction.deleteReply();
 	},
 };
