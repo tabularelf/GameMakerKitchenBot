@@ -1,4 +1,4 @@
-const { Events, MessageFlags } = require('discord.js');
+const { Events, ButtonBuilder, ButtonStyle, ActionRowBuilder, ComponentType } = require('discord.js');
 const linkHandle = require('../src/link-handling-gist.js');
 const Emotes = [
     `🍳`,
@@ -69,8 +69,24 @@ async function handleLinkSnippets(message) {
             response += "```" + resultMatch.extension + `\n${resultMatch.toDisplay}\n` + "```\n";
         }
 
+        const delete_ = new ButtonBuilder()
+            .setCustomId('delete')
+            .setLabel('🚮')
+            .setStyle(ButtonStyle.Secondary);
+
+        const row = new ActionRowBuilder()
+            .addComponents(delete_);
+
+        const collectorFilter = i => {
+            i.deferUpdate();
+	        return i.user.id === message.author.id;
+        };
+
         if (response.length <= 2000) {
-            await message.reply({content: response, allowedMentions: {repliedUser: false}});
+            const result = await message.reply({content: response, allowedMentions: {repliedUser: false}, components: [row], withResponse: true});
+            result.awaitMessageComponent({ filter: collectorFilter, componentType: ComponentType.Button, time: 60_000 })
+	                .then(async interaction => {if (interaction.customId === 'delete') {await result.delete();}})
+	                .catch(err => console.log('handleLinks has expired!'));
         } else {
             for(resultMatch of results) {
                 if (resultMatch == null) {
@@ -80,9 +96,12 @@ async function handleLinkSnippets(message) {
                 response = "```" + resultMatch.extension + `\n${resultMatch.toDisplay}\n` + "```\n";
 
                 if (response.length > 2000) {
-                 await message.reply({content: `Result too long: <${resultMatch.url}>`, allowedMentions: {repliedUser: false}});
+                    await message.reply({content: `Result too long: <${resultMatch.url}>`, allowedMentions: {repliedUser: false}});
                 } else {
-                    await message.reply({content: response, allowedMentions: {repliedUser: false}});
+                    const result = await message.reply({content: response, allowedMentions: {repliedUser: false}, components: [row], withResponse: true});
+                    result.awaitMessageComponent({ filter: collectorFilter, componentType: ComponentType.Button, time: 60_000 })
+	                    .then(async interaction => {if (interaction.customId === 'delete') {await result.delete();}})
+	                    .catch(err => console.log('handleLinks has expired!'));
                 }
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
