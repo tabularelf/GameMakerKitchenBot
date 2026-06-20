@@ -22,7 +22,7 @@ module.exports = {
     AutoDownloadSearchJSON: async function() {
         const folderName = "./.temp/";
         const searchFile = `${folderName}resource.json`;
-        await download("http://www.gamemakerkitchen.com/resource.json", searchFile, function(){
+        await download("https://www.gamemakerkitchen.com/resource.json", searchFile, function(){
             console.log("resource.json downloaded!");
         });
     },
