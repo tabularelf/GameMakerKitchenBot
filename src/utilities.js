@@ -1,9 +1,9 @@
 const fetch = require('node-fetch'); 
-const http = require('http');
+const http = require('https');
 const fs = require('node:fs');
 const download = async function (url, dest, cb) {
 	var file = fs.createWriteStream(dest);
-	var request = http.get(url, function (response) {
+	var request = https.get(url, function (response) {
 		response.pipe(file);
 		file.on('finish', function () {
 			file.close(cb);  // close() is async, call cb after close completes.
@@ -22,7 +22,7 @@ module.exports = {
     AutoDownloadSearchJSON: async function() {
         const folderName = "./.temp/";
         const searchFile = `${folderName}resource.json`;
-        await download("https://www.gamemakerkitchen.com/resource.json", searchFile, function(){
+        await download("http://www.gamemakerkitchen.com/resource.json", searchFile, function(){
             console.log("resource.json downloaded!");
         });
     },
