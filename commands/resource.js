@@ -221,6 +221,7 @@ module.exports = {
 				let release = null;
 				let title = result.title;
 				let date = result.date;
+				let prefab = result.prefab;
 				if ('threadLink' in result) {
 					desc = `${desc}\n\nThread Link: ${result.threadLink}`
 				} else if ('supportLink' in result) {
@@ -238,6 +239,10 @@ module.exports = {
 				
 				if (release !== null) {
 					desc += `\n### Download the latest release [here](${release.html_url})!`;
+				}
+				
+				if (prefabData !== null) {
+					desc += `\n### Available as a prefab "${prefab.fullname}" [here](${prefab.url})!`;
 				}
 
 				desc += `\n-# Available from ${url}.`;
