@@ -241,7 +241,7 @@ module.exports = {
 					desc += `\n### Download the latest release [here](${release.html_url})!`;
 				}
 				
-				if (prefab !== null) {
+				if (typeof prefab === 'object') {
 					desc += `\n### Available as a prefab "${prefab.fullname}" [here](${prefab.url})!`;
 				}
 
